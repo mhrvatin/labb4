@@ -29,3 +29,4 @@ std::string Fnode::getData()
 {
 	return this->fdata;
 }
+

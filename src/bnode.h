@@ -20,9 +20,9 @@ public:
 	Bnode(std::string path, int size, std::string name, Bnode* dotdot);
 
 	virtual ~Bnode() = 0;
-	virtual void setPath(std::string path) = 0;
-	virtual std::string getPath() const = 0; 
-  std::string getName();
+	void setPath(std::string path);	
+	std::string getName() const;
+	std::string getPath() const;
 
 };
 #endif

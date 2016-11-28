@@ -24,7 +24,7 @@ public:
      */
 
     /* This function creates a file in the filesystem */
-    // createFile(...)
+    int createFile(std::string fileName);
 
     /* Creates a folder in the filesystem */
     int createFolder(std::string folderName);

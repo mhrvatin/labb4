@@ -18,5 +18,6 @@ public:
 	void setData(std::string fdata);
 	std::string getData();
 
+
 };
 #endif

@@ -47,6 +47,7 @@ int main(void) {
                 fs.listDir(commandArr[1]);
                 break;
             case 3: // create
+				fs.createFile(commandArr[1]);
                 break;
             case 4: // cat
                 break;

@@ -7,6 +7,7 @@ FileSystem::FileSystem() {
 
 FileSystem::~FileSystem() {
 
+			delete mRoot;
 }
 
 int FileSystem::createFolder(std::string folderName) {
@@ -17,13 +18,30 @@ int FileSystem::createFolder(std::string folderName) {
 }
 
 std::string FileSystem::listDir(std::string dir) {
-  std::vector<Bnode*> files = this->mRoot->getFiles();
+  // TODO: MAKE WALKER STAND ON "PARAMETER DIR" BEFORE GETTING FILE-VECTOR.
+	
 
-  for (int i = 0; i < files.size(); i++) {
-    //std::cout << i << std::endl;
-    std::cout << dynamic_cast<Dnode*>(files.at(i))->getName() << std::endl;
-    //std::cout << files.at(i)->getName() << std::endl;
+  std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles();
+  //
+  // TODO: FIX SO THE FUNCTION RETURNS STRING INSTEAD OF COUTING IN FUNCTION.
+  //
+  for (unsigned int i = 0; i < files.size(); i++) {
+    //std::cout << i << std::endl; FOR DEBUGGING ONLY
+	// is dynamic_cast needed? 
+	if(dynamic_cast<Dnode*>(files.at(i)))
+		std::cout << dynamic_cast<Dnode*>(files.at(i))->getName() << std::endl; 
+	else if (dynamic_cast<Fnode*>(files.at(i)))
+		std::cout << dynamic_cast<Fnode*>(files.at(i))->getName() << std::endl;
   }
 
   return "";
+}
+int FileSystem::createFile(std::string fileName)
+{
+
+	
+	Fnode* file = new Fnode("TESTING TESTING", mWalker.getCwd(), 4, fileName, mWalker.getLookingAt());	
+	mRoot->addNode(file);
+	
+	return 1; // Fix proper return-value.
 }

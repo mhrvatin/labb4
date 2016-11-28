@@ -9,9 +9,7 @@ Walker::Walker()
 
 Walker::~Walker()
 {
-	// NEEDS TO BE DELETED(!?)
-	delete lookingAt;
-	delete prev;	
+
 }
 
 Walker::Walker(Bnode* lookingAt, Bnode* prev, std::string cwd)

@@ -13,14 +13,10 @@ Dnode::Dnode(std::string path, int size, std::string name, Bnode* dotdot):Bnode(
 Dnode::~Dnode()
 {
 	//delete files; // implement proper delete to avoid memory leaks
-}
-
-void Dnode::setPath(std::string path) {
-  
-}
-
-std::string Dnode::getPath() const {
-  return "tempPath";
+		for(unsigned int i = 0; i < this->files.size(); i++)
+	{
+		delete this->files[i];
+	}
 }
 
 int Dnode::addNode(Bnode* node) {
