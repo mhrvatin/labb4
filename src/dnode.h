@@ -8,15 +8,13 @@ class Dnode: public Bnode
 {
 private:
 	std::vector<Bnode*> files;
-	Dnode* parent;
 
 public:
-	Dnode(Dnode* parent); 
-	// TODO: IMPLEMENT CONSTRUCTOR FOR INHERITENCE.
-	
+	Dnode();
+	Dnode(std::string path, int size, std::string name);	
 	~Dnode();
 
-	//TODO: IMPLEMENT NECCESSARY THINGS, like GET SET
+	
 
 };
 #endif

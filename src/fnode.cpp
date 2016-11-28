@@ -1,6 +1,5 @@
 #include "fnode.h"
 
-//TODO: Implement CONSTRUCTOR/DESTRUCTOR/INHERITENCECONSTRUCTOR // CLASS FUNCTIONS
 Fnode::Fnode()
 {
 	this->fdata = "";
