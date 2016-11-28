@@ -1,3 +1,16 @@
 #include "dnode.h"
 
-//TODO: IMPLEMENT CONSTRUCTOR/DESTRUCTOR/CLASS FUNCTIONS FOR DNODE
+Dnode::Dnode()
+{
+	this->files = new vector<Bnode*>();
+}
+
+Dnode::Dnode(std::string path, int size, std::string name):Bnode(path, size, name)
+{
+	this->files = new vector<Bnode*>();
+}
+
+Dnode::~Dnode()
+{
+	delete files;
+}
