@@ -8,6 +8,8 @@ class FileSystem
 private:
     MemBlockDevice mMemblockDevice;
     // Here you can add your own data structures
+    Fnode mFnode;
+    Dnode mDnode;
 public:
     FileSystem();
     ~FileSystem();
@@ -33,7 +35,7 @@ public:
     // goToFolder(...);
 
     /* This function will get all the files and folders in the specified folder */
-    // listDir(...);
+    //listDir(std::string dir);
 
     /* Add your own member-functions if needed */
 };

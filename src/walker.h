@@ -10,16 +10,15 @@ class Walker
 private:	
 	Bnode* lookingAt;
 	Bnode* prev;
-
-	std::string pwd;
+	std::string cwd;
 
 public:
 	Walker();
 	~Walker();
-	Walker(Bnode* lookingAt, Bnode* prev, std::string setPwd);
+	Walker(Bnode* lookingAt, Bnode* prev, std::string cwd);
 
-	std::string getPwd();
-	void setPwd(std::string pwd);	
+	std::string getCwd();
+	void setCwd(std::string cwd);	
 	
 	//TODO: FUNCTIONS FOR SETTING NODES
 };

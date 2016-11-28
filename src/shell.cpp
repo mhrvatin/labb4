@@ -18,7 +18,7 @@ std::string help();
 int main(void) {
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
-	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
+	std::string user = "user@DV1460";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
 
     bool bRun = true;

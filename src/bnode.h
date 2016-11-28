@@ -12,6 +12,7 @@ private:
 	std::string path;
 	int size;
 	std::string name;
+  Bnode* dotdot;
 
 public:
 	

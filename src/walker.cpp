@@ -2,10 +2,9 @@
 
 Walker::Walker()
 {
-	
-	this->lookingAt = NULL;
-	this->prev = NULL;
-	this->pwd = "";
+	this->lookingAt = nullptr;
+	this->prev = nullptr;
+	this->cwd = "";
 }
 
 Walker::~Walker()
@@ -15,20 +14,20 @@ Walker::~Walker()
 	delete prev;	
 }
 
-Walker::Walker(Bnode* lookingAt, Bnode* prev, std::string pwd)
+Walker::Walker(Bnode* lookingAt, Bnode* prev, std::string cwd)
 {
 	this->lookingAt = lookingAt;
 	this->prev = prev;
-	this->pwd = pwd;
+	this->cwd = cwd;
 }
 
-std::string Walker::getPwd()
+std::string Walker::getCwd()
 {
-	return this->pwd;
+	return this->cwd;
 }
 
-void Walker::setPwd(std::string pwd)
+void Walker::setCwd(std::string cwd)
 {
-	this->pwd = pwd;
+	this->cwd = cwd;
 }
 

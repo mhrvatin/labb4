@@ -8,7 +8,6 @@ class Dnode: public Bnode
 {
 private:
 	std::vector<Bnode*> files;
-	Dnode* parent;
 
 public:
 	Dnode(Dnode* parent); 
