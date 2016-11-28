@@ -11,10 +11,11 @@ private:
 
 public:
 	Dnode();
-	Dnode(std::string path, int size, std::string name);	
-	~Dnode();
-
-	
-
+	Dnode(std::string path, int size, std::string name, Bnode* dotdot);	
+	virtual ~Dnode();
+  virtual void setPath(std::string path);
+  virtual std::string getPath() const;
+  int addNode(Bnode* node);
+  std::vector<Bnode*> getFiles();
 };
 #endif

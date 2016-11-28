@@ -26,6 +26,10 @@ std::string Walker::getCwd()
 	return this->cwd;
 }
 
+Bnode* Walker::getLookingAt() {
+  return this->lookingAt;
+}
+
 void Walker::setCwd(std::string cwd)
 {
 	this->cwd = cwd;

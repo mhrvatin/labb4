@@ -11,7 +11,7 @@ private:
 
 public:
 	Fnode();
-	Fnode(std::string fdata, std::string path, int size, std::string name);
+	Fnode(std::string fdata, std::string path, int size, std::string name, Bnode* dotdot);
 	Fnode(std::string fdata);
 	~Fnode();
 

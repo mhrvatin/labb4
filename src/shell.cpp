@@ -20,6 +20,7 @@ int main(void) {
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1460";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
+  FileSystem fs = FileSystem();
 
     bool bRun = true;
 
@@ -42,7 +43,8 @@ int main(void) {
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl;
-                // Call filesystem.ls()
+                //std::cout << commandArr[1] << std::endl;
+                fs.listDir(commandArr[1]);
                 break;
             case 3: // create
                 break;
@@ -61,6 +63,8 @@ int main(void) {
             case 10: // mv
                 break;
             case 11: // mkdir
+                //std::cout << commandArr[1] << std::endl;
+                fs.createFolder(commandArr[1]);
                 break;
             case 12: // cd
                 break;

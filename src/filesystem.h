@@ -2,14 +2,18 @@
 #define FILESYSTEM_H
 
 #include "memblockdevice.h"
+#include "walker.h"
+#include "bnode.h"
+#include "dnode.h"
+#include "fnode.h"
 
 class FileSystem
 {
 private:
     MemBlockDevice mMemblockDevice;
     // Here you can add your own data structures
-    Fnode mFnode;
-    Dnode mDnode;
+    Dnode* mRoot;
+    Walker mWalker;
 public:
     FileSystem();
     ~FileSystem();
@@ -23,7 +27,7 @@ public:
     // createFile(...)
 
     /* Creates a folder in the filesystem */
-    // createFolderi(...);
+    int createFolder(std::string folderName);
 
     /* Removes a file in the filesystem */
     // removeFile(...);
@@ -35,7 +39,7 @@ public:
     // goToFolder(...);
 
     /* This function will get all the files and folders in the specified folder */
-    //listDir(std::string dir);
+    std::string listDir(std::string dir);
 
     /* Add your own member-functions if needed */
 };

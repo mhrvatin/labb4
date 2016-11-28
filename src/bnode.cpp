@@ -15,3 +15,10 @@ Bnode::Bnode(std::string path, int size, std::string name, Bnode* dotdot)
 	this->name = name;
   this->dotdot = dotdot;
 }
+
+Bnode::~Bnode() {
+}
+
+std::string Bnode::getName() {
+  return this->name;
+}

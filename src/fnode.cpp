@@ -5,7 +5,7 @@ Fnode::Fnode()
 	this->fdata = "";
 }
 
-Fnode::Fnode(std::string fdata, std::string path, int size, std::string name):Bnode(path, size, name)
+Fnode::Fnode(std::string fdata, std::string path, int size, std::string name, Bnode* dotdot):Bnode(path, size, name, dotdot)
 {
 	this->fdata = fdata;
 }
