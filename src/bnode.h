@@ -23,6 +23,7 @@ public:
 	void setPath(std::string path);	
 	std::string getName() const;
 	std::string getPath() const;
+	Bnode* getDotDot();
 
 };
 #endif

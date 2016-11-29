@@ -32,3 +32,7 @@ void Bnode::setPath(std::string path)
 	this->path = path;
 }
 
+Bnode* Bnode::getDotDot()
+{
+	return this->dotdot;
+}

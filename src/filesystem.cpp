@@ -45,21 +45,35 @@ int FileSystem::goToFolder(std::string dir)
 	//TODO: SET MWALKER ON PROPPER DIR.
 	std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles();
 
-	for(unsigned int i = 0; i < files.size(); i++)
-	{
-		if(dir == files.at(i)->getName())
-		{
-			if (dynamic_cast<Dnode*>(files.at(i)))
+	if (dir == "..")
 			{
-				std::cout << " CHANGING DIRECTORY " + dir + '\n';
-				mWalker.setLookingAt(files.at(i), mWalker.getLookingAt());
+				if (mWalker.getPrev() != nullptr)
+				{	
+					//std::cout << "Going back one dir" + '\n'; FOR DEBUGGING ONLY
+					mWalker.setLookingAt(mWalker.getPrev());
+					mWalker.setPrev(mWalker.getLookingAt()->getDotDot());
+				}
 			}
-			else
+	else 
+	{
+		for(unsigned int i = 0; i < files.size(); i++)
+		{	
+	
+			if(dir == files.at(i)->getName())
 			{
-				std::cout << "cd: " + dir + ": Not a directory" + '\n';
+				if (dynamic_cast<Dnode*>(files.at(i)))
+				{
+					//std::cout << " CHANGING DIRECTORY " + dir + '\n'; FOR DEBUGGING ONLY
+					mWalker.setPrev(mWalker.getLookingAt());
+					mWalker.setLookingAt(files.at(i));
+				
+				}
+				else
+				{
+					std::cout << "cd: " + dir + ": Not a directory" + '\n';
+				}
 			}
 		}
 	}
-
 	return 1; // Fix proper return-value
 } 
