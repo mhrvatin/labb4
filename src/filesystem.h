@@ -36,7 +36,7 @@ public:
     // removeFolder(...);
 
     /* Function will move the current location to a specified location in the filesystem */
-    // goToFolder(...);
+    int goToFolder(std::string dir);
 
     /* This function will get all the files and folders in the specified folder */
     std::string listDir(std::string dir);
