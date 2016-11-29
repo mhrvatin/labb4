@@ -30,8 +30,10 @@ int main(void) {
 
         int nrOfCommands = parseCommandString(userCommand, commandArr);
         if (nrOfCommands > 0) {
-
-            int cIndex = findCommand(commandArr[0]);
+			
+			//std::cout << commandArr[1] << std::endl; for debugging only!
+            
+			int cIndex = findCommand(commandArr[0]);
             switch(cIndex) {
 
             case 0: // quit
@@ -42,9 +44,8 @@ int main(void) {
                 // Call fileSystem.format()
                 break;
             case 2: // ls
-                std::cout << "Listing directory" << std::endl;
-                //std::cout << commandArr[1] << std::endl;
-                fs.listDir(commandArr[1]);
+                std::cout << "Listing directory" << std::endl; 
+				std::cout << fs.listDir(commandArr[1]);
                 break;
             case 3: // create
 				fs.createFile(commandArr[1]);
@@ -63,8 +64,7 @@ int main(void) {
                 break;
             case 10: // mv
                 break;
-            case 11: // mkdir
-                //std::cout << commandArr[1] << std::endl;
+            case 11: // mkdir 
                 fs.createFolder(commandArr[1]);
                 break;
             case 12: // cd
