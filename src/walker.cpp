@@ -33,3 +33,17 @@ void Walker::setCwd(std::string cwd)
 	this->cwd = cwd;
 }
 
+void Walker::setLookingAt(Bnode* lookingAt)
+{		
+	this->lookingAt = lookingAt;
+}
+
+void Walker::setPrev(Bnode* prev)
+{
+	this->prev = prev;
+}
+
+Bnode* Walker::getPrev()
+{
+	return this->prev;
+}

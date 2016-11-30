@@ -71,6 +71,7 @@ int main(void) {
                 fs.createFolder(commandArr[1]);
                 break;
             case 12: // cd
+				fs.goToFolder(commandArr[1]);
                 break;
             case 13: // pwd
                 fs.printCurrentWorkingDirectory();

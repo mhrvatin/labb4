@@ -18,10 +18,11 @@ public:
 	Walker(Bnode* lookingAt, Bnode* prev, std::string cwd);
 
 	std::string getCwd();
-  Bnode* getLookingAt();
+	Bnode* getLookingAt();
+	Bnode* getPrev();
 	void setCwd(std::string cwd);	
-	
-	//TODO: FUNCTIONS FOR SETTING NODES
+	void setLookingAt(Bnode* lookingAt);
+	void setPrev(Bnode* prev);
 };
 
 
