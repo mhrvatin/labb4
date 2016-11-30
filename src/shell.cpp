@@ -51,6 +51,7 @@ int main(void) {
 				        fs.createFile(commandArr[1]);
                 break;
             case 4: // cat
+                fs.printContents(commandArr[1]);
                 break;
             case 5: // createImage
                 fs.createImage();
