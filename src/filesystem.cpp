@@ -20,7 +20,7 @@ int FileSystem::printContents(std::string fileName) {
   bool hit = false;
   std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
   
-  for (unsigned int i = 0; i < files.size(); i++) {
+  for (unsigned int i = 0; i < files.size() && !hit; i++) {
     if (dynamic_cast<Fnode*>(files.at(i)) && files.at(i)->getName() == fileName) {
       hit = true;
       std::cout << dynamic_cast<Fnode*>(files.at(i))->getData() << std::endl;
@@ -30,6 +30,8 @@ int FileSystem::printContents(std::string fileName) {
   if (!hit) {
     std::cout << "No such file" << std::endl;
   }
+
+  return 1; // implement proper return value
 }
 
 int FileSystem::printCurrentWorkingDirectory() {
@@ -38,10 +40,30 @@ int FileSystem::printCurrentWorkingDirectory() {
   return 1; // implement proper return value
 }
 
+int FileSystem::removeFile(std::string fileName) {
+  bool hit = false;
+  std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
+  
+  for (unsigned int i = 0; i < files.size(); i++) {
+    if (files.at(i)->getName() == fileName) {
+      hit = true;
+      
+      files.erase(files.begin() + i);
+    }
+	}
+
+  if (!hit) {
+    std::cout << "No such file or directory" << std::endl;
+  }
+
+  dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->setFiles(files);
+
+  return 1; // implement proper return value
+}
+
 std::string FileSystem::listDir(std::string dir) {
   // TODO: MAKE WALKER STAND ON "PARAMETER DIR" BEFORE GETTING FILE-VECTOR.
 	
-
   std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
   std::string listDirs = "";
 

@@ -28,3 +28,7 @@ int Dnode::addNode(Bnode* node) {
 std::vector<Bnode*> Dnode::getFiles() {
   return this->files;
 }
+
+void Dnode::setFiles(std::vector<Bnode*> files) {
+  this->files = files;
+}

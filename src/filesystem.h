@@ -43,7 +43,7 @@ public:
     int printCurrentWorkingDirectory();
 
     /* Removes a file in the filesystem */
-    removeFile(std::string fileName);
+    int removeFile(std::string fileName);
 
     /* Removes a folder in the filesystem */
     // removeFolder(...);
