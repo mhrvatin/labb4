@@ -1,6 +1,13 @@
 #ifndef FILESYSTEM_H
 #define FILESYSTEM_H
 
+#include <algorithm> // writing/reading vector to/from file
+#include <fstream>
+#include <iostream>  // writing/reading vector to/from file
+#include <iterator>  // writing/reading vector to/from file
+
+#include <unistd.h>    // getting userid
+
 #include "memblockdevice.h"
 #include "walker.h"
 #include "bnode.h"
@@ -42,6 +49,8 @@ public:
     std::string listDir(std::string dir);
 
     /* Add your own member-functions if needed */
+    // Writes the virtual file system to a file on the actual file system
+    int createImage();
 };
 
 #endif // FILESYSTEM_H

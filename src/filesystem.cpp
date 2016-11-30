@@ -39,3 +39,17 @@ int FileSystem::createFile(std::string fileName)
 	
 	return 1; // Fix proper return-value.
 }
+
+int FileSystem::createImage() {
+  /*std::string loggedInUser = getlogin();
+  std::string path = "/home/" + loggedInUser + "/labb4_filesystem_image";
+  std::cout << loggedInUser << std::endl; // print logged in user
+
+  //std::ofstream fsImage(path, std::ios::out | std::ofstream::binary);
+  //std::copy(mRoot->getFiles().begin(), mRoot->getFiles().end(), std::ostreambuf_iterator<char>(fsImage));
+  std::ofstream fsImage(path);
+  std::ostream_iterator<std::string> output_iterator(fsImage, "\n");
+  std::copy(mRoot->getFiles().begin, mRoot->getFiles().end(), output_iterator);*/
+
+  return 1; // fix proper return value
+}

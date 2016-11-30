@@ -45,14 +45,15 @@ int main(void) {
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl; 
-				std::cout << fs.listDir(commandArr[1]);
+				        std::cout << fs.listDir(commandArr[1]);
                 break;
             case 3: // create
-				fs.createFile(commandArr[1]);
+				        fs.createFile(commandArr[1]);
                 break;
             case 4: // cat
                 break;
             case 5: // createImage
+                fs.createImage();
                 break;
             case 6: // restoreImage
                 break;
