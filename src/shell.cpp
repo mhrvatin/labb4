@@ -72,6 +72,7 @@ int main(void) {
             case 12: // cd
                 break;
             case 13: // pwd
+                fs.printCurrentWorkingDirectory();
                 break;
             case 14: // help
                 std::cout << help() << std::endl;

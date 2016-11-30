@@ -6,7 +6,6 @@ FileSystem::FileSystem() {
 }
 
 FileSystem::~FileSystem() {
-
 			delete mRoot;
 }
 
@@ -31,6 +30,10 @@ int FileSystem::printContents(std::string fileName) {
   if (!hit) {
     std::cout << "No such file" << std::endl;
   }
+}
+
+int FileSystem::printCurrentWorkingDirectory() {
+  std::cout << mWalker.getCwd() << std::endl;
 
   return 1; // implement proper return value
 }

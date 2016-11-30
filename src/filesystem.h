@@ -39,8 +39,11 @@ public:
     // gets the contents of the file
     int printContents(std::string fileName);
 
+    // print out current working directory
+    int printCurrentWorkingDirectory();
+
     /* Removes a file in the filesystem */
-    // removeFile(...);
+    removeFile(std::string fileName);
 
     /* Removes a folder in the filesystem */
     // removeFolder(...);
