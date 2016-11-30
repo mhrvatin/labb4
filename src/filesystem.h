@@ -29,6 +29,9 @@ public:
     /* Creates a folder in the filesystem */
     int createFolder(std::string folderName);
 
+    // gets the contents of the file
+    int printContents(std::string fileName);
+
     /* Removes a file in the filesystem */
     // removeFile(...);
 

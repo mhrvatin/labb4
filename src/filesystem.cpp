@@ -17,6 +17,24 @@ int FileSystem::createFolder(std::string folderName) {
   return 1; // implement proper return value
 }
 
+int FileSystem::printContents(std::string fileName) {
+  bool hit = false;
+  std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
+  
+  for (unsigned int i = 0; i < files.size(); i++) {
+    if (dynamic_cast<Fnode*>(files.at(i)) && files.at(i)->getName() == fileName) {
+      hit = true;
+      std::cout << dynamic_cast<Fnode*>(files.at(i))->getData() << std::endl;
+    }
+	}
+
+  if (!hit) {
+    std::cout << "No such file" << std::endl;
+  }
+
+  return 1; // implement proper return value
+}
+
 std::string FileSystem::listDir(std::string dir) {
   // TODO: MAKE WALKER STAND ON "PARAMETER DIR" BEFORE GETTING FILE-VECTOR.
 	
@@ -25,12 +43,12 @@ std::string FileSystem::listDir(std::string dir) {
   std::string listDirs = "";
 
   for (unsigned int i = 0; i < files.size(); i++) {
-	
-		listDirs += files.at(i)->getName() + '\n';
+    listDirs += files.at(i)->getName() + '\n';
 	}
 
   return listDirs;
 }
+
 int FileSystem::createFile(std::string fileName)
 {
 	
