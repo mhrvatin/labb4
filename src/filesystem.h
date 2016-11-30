@@ -18,6 +18,9 @@ public:
     FileSystem();
     ~FileSystem();
 
+	Bnode* findDir(std::string dir);
+	Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
+
     /* These commands needs to implemented
      *
      * However, you are free to change the parameterlist and specify your own returntype for each function below.

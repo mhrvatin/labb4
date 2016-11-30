@@ -5,7 +5,7 @@ Bnode::Bnode()
 	this->path = "";
 	this->size = 0;
 	this->name = "";
-  this->dotdot = nullptr;
+	this->dotdot = nullptr;
 }
 
 Bnode::Bnode(std::string path, int size, std::string name, Bnode* dotdot)
