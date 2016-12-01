@@ -2,7 +2,7 @@
 
 FileSystem::FileSystem() {
   this->mRoot = new Dnode();
-  this->mWalker = Walker(this->mRoot, nullptr, "/");
+	  this->mWalker = Walker(this->mRoot, nullptr);
   this->mRoot->setPath("/");
   
   for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
@@ -90,10 +90,10 @@ int FileSystem::createFile(std::string fileName)
   int blockNr = this->getFirstEmptyBlockNr();
     
   if (blockNr != -1) { // no empty blocks left
-    Fnode* file = new Fnode(tmp, mWalker.getCwd(), fileName, mWalker.getLookingAt(), blockNr);	
+    Fnode* file = new Fnode(tmp, mWalker.getLookingAt()->getPath(), fileName, mWalker.getLookingAt(), blockNr);	
 
     this->setBlockNrPos(blockNr);
-    mRoot->addNode(file);
+    dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(file);
   } else {
     std::cout << "No empty blocks left" << std::endl; // for debug
   }

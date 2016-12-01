@@ -15,12 +15,12 @@ private:
 public:
 	Walker();
 	~Walker();
-	Walker(Bnode* lookingAt, Bnode* prev, std::string cwd);
+	Walker(Bnode* lookingAt, Bnode* prev);
 
-	std::string getCwd();
+
 	Bnode* getLookingAt();
 	Bnode* getPrev();
-	void setCwd(std::string cwd);	
+	
 	void setLookingAt(Bnode* lookingAt);
 	void setPrev(Bnode* prev);
 };
