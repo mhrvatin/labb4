@@ -214,6 +214,7 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 	//std::cout << "Returning: " << size+1 << std::endl << "dir.size():" << dir.size() << std::endl; // FOR DEBUGGING ONLY
 	return traverseTree(dir, size+1, returnNode);	
 	}
+}
 
 void FileSystem::setBlockNrPos(int idx) {
   this->blockNrs[idx] = true;

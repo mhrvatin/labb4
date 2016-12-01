@@ -38,4 +38,6 @@ int Dnode::removeNode(int position)
 	Bnode* theNode = this->files.at(position);
 	this->files.erase(this->files.begin() + position);
 	delete theNode;
+
+  return 1; //implement proper return value
 }
