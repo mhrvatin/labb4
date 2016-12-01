@@ -15,6 +15,7 @@ public:
 	virtual ~Dnode();
 	int addNode(Bnode* node);
 	std::vector<Bnode*> getFiles();
-  void setFiles(std::vector<Bnode*> files);
+	void setFiles(std::vector<Bnode*> files);
+	int removeNode(int position);
 };
 #endif

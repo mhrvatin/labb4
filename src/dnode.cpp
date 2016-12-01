@@ -32,3 +32,10 @@ std::vector<Bnode*> Dnode::getFiles() {
 void Dnode::setFiles(std::vector<Bnode*> files) {
   this->files = files;
 }
+
+int Dnode::removeNode(int position)
+{
+	Bnode* theNode = this->files.at(position);
+	this->files.erase(this->files.begin() + position);
+	delete theNode;
+}

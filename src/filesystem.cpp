@@ -6,12 +6,12 @@ FileSystem::FileSystem() {
 }
 
 FileSystem::~FileSystem() {
-			delete mRoot;
+			delete this->mRoot;
 }
 
 int FileSystem::createFolder(std::string folderName) {
-  Dnode* folder = new Dnode(mWalker.getCwd(), 4, folderName, mWalker.getLookingAt());
-  dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(folder);
+  
+  dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getCwd(), 4, folderName, mWalker.getLookingAt()));
 
   return 1; // implement proper return value
 }
@@ -46,17 +46,18 @@ int FileSystem::removeFile(std::string fileName) {
   
   for (unsigned int i = 0; i < files.size(); i++) {
     if (files.at(i)->getName() == fileName) {
-      hit = true;
-      
-      files.erase(files.begin() + i);
-    }
+			if(dynamic_cast<Fnode*>(files.at(i)))
+			{			
+				hit = true;
+				dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->removeNode(i);
+			}
+		}
 	}
 
   if (!hit) {
-    std::cout << "No such file or directory" << std::endl;
+    std::cout << "No such file." << std::endl;
   }
-
-  dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->setFiles(files);
+  
 
   return 1; // implement proper return value
 }
@@ -77,9 +78,8 @@ std::string FileSystem::listDir(std::string dir) {
 int FileSystem::createFile(std::string fileName)
 {
 	
-	Fnode* file = new Fnode("TESTING TESTING", mWalker.getCwd(), 4, fileName, mWalker.getLookingAt());	
-	dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(file);
-	
+	dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Fnode("TESTING TESTING", mWalker.getCwd(), 4, fileName, mWalker.getLookingAt()));
+
 	return 1; // Fix proper return-value.
 }
 
