@@ -3,6 +3,7 @@
 FileSystem::FileSystem() {
   this->mRoot = new Dnode();
   this->mWalker = Walker(this->mRoot, nullptr, "/");
+  this->mRoot->setPath("/");
 }
 
 FileSystem::~FileSystem() {
@@ -11,7 +12,8 @@ FileSystem::~FileSystem() {
 
 int FileSystem::createFolder(std::string folderName) {
   
-  dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getCwd(), 4, folderName, mWalker.getLookingAt()));
+  dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getLookingAt()->getPath() + 
+			folderName + "/", 4, folderName, mWalker.getLookingAt()));
 
   return 1; // implement proper return value
 }
@@ -35,7 +37,7 @@ int FileSystem::printContents(std::string fileName) {
 }
 
 int FileSystem::printCurrentWorkingDirectory() {
-  std::cout << mWalker.getCwd() << std::endl;
+  std::cout << mWalker.getLookingAt()->getPath() << std::endl;
 
   return 1; // implement proper return value
 }
