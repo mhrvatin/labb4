@@ -16,12 +16,17 @@
 
 class FileSystem
 {
+public:
+    static const int BLOCK_ARRAY_SIZE = 250;
 private:
     MemBlockDevice mMemblockDevice;
     // Here you can add your own data structures
+    
     Dnode* mRoot;
     Walker mWalker;
+    bool blockNrs[BLOCK_ARRAY_SIZE];
 public:
+
     FileSystem();
     ~FileSystem();
 
@@ -60,6 +65,11 @@ public:
     /* Add your own member-functions if needed */
     // Writes the virtual file system to a file on the actual file system
     int createImage();
+
+    void setBlockNrPos(int idx);
+    void deleteBlockNrPos(int idx);
+    bool getBlockNrStatus(int idx);
+    int getFirstEmptyBlockNr();
 };
 
 #endif // FILESYSTEM_H

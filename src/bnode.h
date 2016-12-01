@@ -10,20 +10,17 @@ class Bnode
 {
 private:
 	std::string path;
-	int size;
 	std::string name;
   Bnode* dotdot;
 
 public:
-	
 	Bnode();
-	Bnode(std::string path, int size, std::string name, Bnode* dotdot);
+	Bnode(std::string path, std::string name, Bnode* dotdot);
 
 	virtual ~Bnode() = 0;
-	void setPath(std::string path);	
 	std::string getName() const;
+	void setPath(std::string path);	
 	std::string getPath() const;
 	Bnode* getDotDot();
-
 };
 #endif

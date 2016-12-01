@@ -4,6 +4,10 @@ FileSystem::FileSystem() {
   this->mRoot = new Dnode();
   this->mWalker = Walker(this->mRoot, nullptr, "/");
   this->mRoot->setPath("/");
+  
+  for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
+    this->blockNrs[i] = false;
+  }
 }
 
 FileSystem::~FileSystem() {
@@ -11,9 +15,8 @@ FileSystem::~FileSystem() {
 }
 
 int FileSystem::createFolder(std::string folderName) {
-  
   dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getLookingAt()->getPath() + 
-			folderName + "/", 4, folderName, mWalker.getLookingAt()));
+			folderName + "/", folderName, mWalker.getLookingAt()));
 
   return 1; // implement proper return value
 }
@@ -79,9 +82,22 @@ std::string FileSystem::listDir(std::string dir) {
 
 int FileSystem::createFile(std::string fileName)
 {
-	
-	dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Fnode("TESTING TESTING", mWalker.getCwd(), 4, fileName, mWalker.getLookingAt()));
+	// Fnode(std::string fdata, std::string path, int size, std::string name, Bnode* dotdot, int blockNr);
+  std::string tmp;
+  tmp.reserve(512);
+  tmp = "test test";
+  
+  int blockNr = this->getFirstEmptyBlockNr();
+    
+  if (blockNr != -1) { // no empty blocks left
+    Fnode* file = new Fnode(tmp, mWalker.getCwd(), fileName, mWalker.getLookingAt(), blockNr);	
 
+    this->setBlockNrPos(blockNr);
+    mRoot->addNode(file);
+  } else {
+    std::cout << "No empty blocks left" << std::endl; // for debug
+  }
+	
 	return 1; // Fix proper return-value.
 }
 
@@ -199,4 +215,26 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 	return traverseTree(dir, size+1, returnNode);	
 	}
 
+void FileSystem::setBlockNrPos(int idx) {
+  this->blockNrs[idx] = true;
+}
+
+void FileSystem::deleteBlockNrPos(int idx) {
+  this->blockNrs[idx] = false;
+}
+
+bool FileSystem::getBlockNrStatus(int idx) {
+  return this->blockNrs[idx];
+}
+
+int FileSystem::getFirstEmptyBlockNr() {
+  int ret = -1;
+
+  for (int i = 0; i < this->BLOCK_ARRAY_SIZE && ret == -1; i++) {
+    if (!this->getBlockNrStatus(i)) {
+      ret = i;
+    }
+  }
+
+  return ret;
 }

@@ -5,7 +5,7 @@ Dnode::Dnode()
 	this->files = std::vector<Bnode*>();
 }
 
-Dnode::Dnode(std::string path, int size, std::string name, Bnode* dotdot):Bnode(path, size, name, dotdot)
+Dnode::Dnode(std::string path, std::string name, Bnode* dotdot):Bnode(path, name, dotdot)
 {
 	this->files = std::vector<Bnode*>();
 }
