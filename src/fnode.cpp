@@ -11,9 +11,6 @@ Fnode::Fnode(std::string fdata, std::string path, std::string name, Bnode* dotdo
 {
 	this->mFdata = fdata;
   this->mBlockNr = blockNr;
-  this->mMemBlockDevice = MemBlockDevice(1);
-
-  mMemBlockDevice.writeBlock(blockNr, fdata);
 }
 
 Fnode::~Fnode() {}
@@ -33,10 +30,10 @@ std::string Fnode::getData()
 	return this->mFdata;
 }
 
-int Fnode::getBlockNr() {
-  return this->mBlockNr;
-}
-
 void Fnode::setBlockNr(int blockNr) {
   this->mBlockNr = blockNr;
+}
+
+int Fnode::getBlockNr() {
+  return this->mBlockNr;
 }

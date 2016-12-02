@@ -10,7 +10,6 @@ class Fnode: public Bnode
 private:
 	std::string mFdata;
   int mBlockNr;
-  MemBlockDevice mMemBlockDevice;
 
 public:
 	Fnode();
@@ -20,8 +19,7 @@ public:
 
 	void setData(std::string fdata);
 	std::string getData();
-  int getBlockNr();
   void setBlockNr(int blockNr);
-
+  int getBlockNr();
 };
 #endif
