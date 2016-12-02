@@ -1,13 +1,8 @@
 #include "filesystem.h"
 
 FileSystem::FileSystem() {
-  this->mRoot = new Dnode();
-	  this->mWalker = Walker(this->mRoot, nullptr);
-  this->mRoot->setPath("/");
-  
-  for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
-    this->blockNrs[i] = false;
-  }
+  this->mMemBlockDevice = MemBlockDevice(this->BLOCK_ARRAY_SIZE);
+  this->format();
 }
 
 FileSystem::~FileSystem() {
@@ -21,22 +16,23 @@ int FileSystem::createFolder(std::string folderName) {
   return 1; // implement proper return value
 }
 
-int FileSystem::printContents(std::string fileName) {
+std::string FileSystem::printContents(std::string fileName) {
+  std::string contents = "No such file or directory";
+
   bool hit = false;
   std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
   
   for (unsigned int i = 0; i < files.size() && !hit; i++) {
     if (dynamic_cast<Fnode*>(files.at(i)) && files.at(i)->getName() == fileName) {
       hit = true;
-      std::cout << dynamic_cast<Fnode*>(files.at(i))->getData() << std::endl;
+      Fnode* foundFile = dynamic_cast<Fnode*>(files.at(i));
+
+      Block block = this->mMemBlockDevice.readBlock(foundFile->getBlockNr());
+      contents = block.toString();
     }
 	}
 
-  if (!hit) {
-    std::cout << "No such file" << std::endl;
-  }
-
-  return 1; // implement proper return value
+  return contents; // implement proper return value
 }
 
 int FileSystem::printCurrentWorkingDirectory() {
@@ -80,25 +76,36 @@ std::string FileSystem::listDir(std::string dir) {
   return listDirs;
 }
 
-int FileSystem::createFile(std::string fileName)
-{
-	// Fnode(std::string fdata, std::string path, int size, std::string name, Bnode* dotdot, int blockNr);
-  std::string tmp;
-  tmp.reserve(512);
-  tmp = "test test";
-  
-  int blockNr = this->getFirstEmptyBlockNr();
-    
-  if (blockNr != -1) { // no empty blocks left
-    Fnode* file = new Fnode(tmp, mWalker.getLookingAt()->getPath(), fileName, mWalker.getLookingAt(), blockNr);	
+int FileSystem::createFile(std::string fileName) {
+  int ret = -1;
 
-    this->setBlockNrPos(blockNr);
-    dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(file);
-  } else {
-    std::cout << "No empty blocks left" << std::endl; // for debug
+  if (fileName.length() > 0) {
+    ret = 1;
+    std::string tmp;
+    int blockNr = this->getFirstEmptyBlockNr();
+
+    tmp = "test test"; // TODO: user should be able to input text in file by themself 
+    tmp.resize(512);
+      
+    if (blockNr != -1) { // empty blocks are still available
+      Fnode* file = new Fnode(tmp, mWalker.getLookingAt()->getPath(), fileName, mWalker.getLookingAt(), blockNr);	
+      std::string tmp = file->getData();
+      std::cout << "file->getData() size:" << tmp.size() << "." << std::endl;
+      
+      if (mMemBlockDevice.writeBlock(blockNr, file->getData()) == 1) {
+        std::cout << "filesystem::createFile: block written!" << std::endl; // for debuging
+      } else {
+        std::cout << "filesystem::createFile: an error occured" << std::endl; // for debuging
+      }
+
+      this->setBlockNrPos(blockNr);
+      mRoot->addNode(file);
+    } else {
+      std::cout << "No empty blocks left" << std::endl; // for debuging
+    }
   }
 	
-	return 1; // Fix proper return-value.
+	return ret;
 }
 
 
@@ -214,6 +221,22 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 	//std::cout << "Returning: " << size+1 << std::endl << "dir.size():" << dir.size() << std::endl; // FOR DEBUGGING ONLY
 	return traverseTree(dir, size+1, returnNode);	
 	}
+}
+
+int FileSystem::format() {
+  int firstEmptyBlock = this->getFirstEmptyBlockNr();
+  if (firstEmptyBlock != -1) { // fs is already empty
+    this->mRoot = new Dnode();
+    this->mWalker = Walker(this->mRoot, nullptr);
+
+    for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
+      this->blockNrs[i] = false;
+    }
+  } else { // empty the fs
+
+  }
+  
+  return 1; // implement proper return value
 }
 
 void FileSystem::setBlockNrPos(int idx) {

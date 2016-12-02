@@ -42,7 +42,7 @@ int main(void) {
                 std::cout << "Exiting\n";
                 break;
             case 1: // format
-                // Call fileSystem.format()
+                fs.format();
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl; 
@@ -52,7 +52,7 @@ int main(void) {
 				        fs.createFile(commandArr[1]);
                 break;
             case 4: // cat
-                fs.printContents(commandArr[1]);
+                std::cout << fs.printContents(commandArr[1]) << std::endl;
                 break;
             case 5: // createImage
                 fs.createImage();

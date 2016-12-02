@@ -19,7 +19,7 @@ class FileSystem
 public:
     static const int BLOCK_ARRAY_SIZE = 250;
 private:
-    MemBlockDevice mMemblockDevice;
+    MemBlockDevice mMemBlockDevice;
     // Here you can add your own data structures
     
     Dnode* mRoot;
@@ -29,9 +29,9 @@ public:
 
     FileSystem();
     ~FileSystem();
-
-	Bnode* findDir(std::string dir);
-	Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
+	  
+    Bnode* findDir(std::string dir);
+	  Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
 
     /* These commands needs to implemented
      *
@@ -45,7 +45,7 @@ public:
     int createFolder(std::string folderName);
 
     // gets the contents of the file
-    int printContents(std::string fileName);
+    std::string printContents(std::string fileName);
 
     // print out current working directory
     int printCurrentWorkingDirectory();
@@ -56,8 +56,8 @@ public:
     /* Removes a folder in the filesystem */
     // removeFolder(...);
 
-	// Copy file
-	int copyFile(std::string file, std::string newFilePath = "");
+    // Copy file
+    int copyFile(std::string file, std::string newFilePath = "");
 
     /* Function will move the current location to a specified location in the filesystem */
     int goToFolder(std::string dir);
@@ -65,9 +65,11 @@ public:
     /* This function will get all the files and folders in the specified folder */
     std::string listDir(std::string dir);
 
-    /* Add your own member-functions if needed */
     // Writes the virtual file system to a file on the actual file system
     int createImage();
+
+    // formats the file system
+    int format();
 
     void setBlockNrPos(int idx);
     void deleteBlockNrPos(int idx);

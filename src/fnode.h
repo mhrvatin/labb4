@@ -23,6 +23,5 @@ public:
 	std::string getData();
 	int getBlockNr();
 	void setBlockNr(int blockNr);
-
 };
 #endif
