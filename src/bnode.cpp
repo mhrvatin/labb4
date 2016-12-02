@@ -14,6 +14,13 @@ Bnode::Bnode(std::string path, std::string name, Bnode* dotdot)
 	this->dotdot = dotdot;
 }
 
+Bnode::Bnode(Bnode const& other)
+{
+	this->path = other.path;
+	this->name = other.name;
+	this->dotdot = other.dotdot;
+}
+
 Bnode::~Bnode() {
 }
 

@@ -190,7 +190,7 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 		{
 			//std::cout << dir[size] << std::endl; # FOR DEBUGGING ONLY
 			std::vector<Bnode*> files = dynamic_cast<Dnode*>(returnNode)->getFiles();
-
+			returnNode = nullptr;
 			for(unsigned int i = 0; i < files.size(); i++)
 			{	
 			
@@ -238,4 +238,47 @@ int FileSystem::getFirstEmptyBlockNr() {
   }
 
   return ret;
+}
+
+int FileSystem::copyFile(std::string file, std::string newFilePath)
+{
+	int exitStatus = -1;
+	
+	// TODO: Place tempnode on the position we want the node. 
+	if (newFilePath == "")
+	{
+		exitStatus = -3;	
+	}	
+	else
+	{
+
+		std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
+
+		for(unsigned int i = 0; i < files.size(); i++)
+		{
+			if(dynamic_cast<Fnode*>(files[i]) && file == files[i]->getName())
+			{
+				// Not so DRY, COPY&PASTED most FROM createFile-function. maybe baby make function?
+				std::string tmp;
+				tmp.reserve(512);
+				tmp = dynamic_cast<Fnode*>(files[i])->getData();	
+				int blockNr = this->getFirstEmptyBlockNr();
+    
+				if (blockNr != -1) { // no empty blocks left
+					Fnode* file = new Fnode(tmp, mWalker.getLookingAt()->getPath(), newFilePath, mWalker.getLookingAt(), blockNr);	
+
+					this->setBlockNrPos(blockNr);
+					dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(file);
+					exitStatus = 1;
+				} else {
+					//std::cout << "No empty blocks left" << std::endl; // for debug
+					exitStatus = -2;
+				}	
+			}
+			
+		}	
+			
+	}
+
+	return exitStatus;
 }

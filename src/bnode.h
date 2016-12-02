@@ -11,11 +11,12 @@ class Bnode
 private:
 	std::string path;
 	std::string name;
-  Bnode* dotdot;
+	Bnode* dotdot;
 
 public:
 	Bnode();
 	Bnode(std::string path, std::string name, Bnode* dotdot);
+	Bnode(Bnode const& other);
 
 	virtual ~Bnode() = 0;
 	std::string getName() const;

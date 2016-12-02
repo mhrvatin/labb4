@@ -56,6 +56,9 @@ public:
     /* Removes a folder in the filesystem */
     // removeFolder(...);
 
+	// Copy file
+	int copyFile(std::string file, std::string newFilePath = "");
+
     /* Function will move the current location to a specified location in the filesystem */
     int goToFolder(std::string dir);
 

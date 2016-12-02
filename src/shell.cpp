@@ -20,7 +20,8 @@ int main(void) {
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1460";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
-  FileSystem fs = FileSystem();
+	FileSystem fs = FileSystem();
+	int exitStatus = 0;
 
     bool bRun = true;
 
@@ -62,6 +63,19 @@ int main(void) {
                 fs.removeFile(commandArr[1]);
                 break;
             case 8: // cp
+				exitStatus = fs.copyFile(commandArr[1], commandArr[2]);
+				if (exitStatus == -1)
+				{
+					std::cout << "No such file: " + commandArr[1] << std::endl;
+				}
+				else if (exitStatus == -2)
+				{
+					std::cout << "Disk is full." << std::endl;
+				}
+				else if (exitStatus == -3)
+				{
+					std::cout << "cp: missing destination file operand after " + commandArr[1] << std::endl;
+				}
                 break;
             case 9: // append
                 break;

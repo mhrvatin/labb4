@@ -7,6 +7,13 @@ Fnode::Fnode()
   // implement memblockdevice, to actually write an empty file to disk
 }
 
+Fnode::Fnode(Fnode const& other)
+{
+		//TODO: Implement mblockdevices.
+		this->mFdata = other.mFdata;
+}
+
+
 Fnode::Fnode(std::string fdata, std::string path, std::string name, Bnode* dotdot, int blockNr):Bnode(path, name, dotdot)
 {
 	this->mFdata = fdata;
