@@ -8,7 +8,6 @@ FileSystem::FileSystem() {
 FileSystem::~FileSystem() {
 			delete this->mRoot;
 }
-
 int FileSystem::createFolder(std::string folderName) {
   dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getLookingAt()->getPath() + 
 			folderName + "/", folderName, mWalker.getLookingAt()));
@@ -35,10 +34,10 @@ std::string FileSystem::printContents(std::string fileName) {
   return contents; // implement proper return value
 }
 
-int FileSystem::printCurrentWorkingDirectory() {
-  std::cout << mWalker.getLookingAt()->getPath() << std::endl;
+std::string FileSystem::printCurrentWorkingDirectory() {
+  
+  return mWalker.getLookingAt()->getPath();
 
-  return 1; // implement proper return value
 }
 
 int FileSystem::removeFile(std::string fileName) {
@@ -63,17 +62,36 @@ int FileSystem::removeFile(std::string fileName) {
   return 1; // implement proper return value
 }
 
-std::string FileSystem::listDir(std::string dir) {
-  // TODO: MAKE WALKER STAND ON "PARAMETER DIR" BEFORE GETTING FILE-VECTOR.
+std::string FileSystem::listDir(std::string dir) { 
 	
-  std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
-  std::string listDirs = "";
+	Bnode* cdDir;
 
-  for (unsigned int i = 0; i < files.size(); i++) {
-    listDirs += files.at(i)->getName() + '\n';
+	if(dir == "") 
+	{
+		cdDir = mWalker.getLookingAt();	
 	}
+	else
+	{
+		cdDir = findDir(dir);
+	}
+	
+	std::string listDirs = "";
 
-  return listDirs;
+	if (cdDir != nullptr)
+	{
+		std::vector<Bnode*> files = dynamic_cast<Dnode*>(cdDir)->getFiles(); 
+		for (unsigned int i = 0; i < files.size(); i++) 
+		{
+			listDirs += files.at(i)->getName() + '\n';
+		}
+	}
+	else
+	{
+		listDirs = "Couldn't find folder " + dir + '\n';
+	}	
+
+
+		return listDirs;
 }
 
 int FileSystem::createFile(std::string fileName) {

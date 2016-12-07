@@ -48,7 +48,7 @@ public:
     std::string printContents(std::string fileName);
 
     // print out current working directory
-    int printCurrentWorkingDirectory();
+	std::string printCurrentWorkingDirectory();
 
     /* Removes a file in the filesystem */
     int removeFile(std::string fileName);

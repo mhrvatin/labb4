@@ -16,23 +16,24 @@ int findCommand(std::string &command);
 std::string help();
 
 int main(void) {
-
-	std::string userCommand, commandArr[MAXCOMMANDS];
-	std::string user = "user@DV1460";    // Change this if you want another user to be displayed
-	std::string currentDir = "/";    // current directory, used for output
+	
 	FileSystem fs = FileSystem();
+	std::string userCommand, commandArr[MAXCOMMANDS];
+	std::string user = "user@";    // Change this if you want another user to be displayed	
 	int exitStatus = 0;
 
     bool bRun = true;
 
     do {
+		std::string currentDir = fs.printCurrentWorkingDirectory();    // current directory, used for output
         std::cout << user << ":" << currentDir << "$ ";
         getline(std::cin, userCommand);
-
-        int nrOfCommands = parseCommandString(userCommand, commandArr);
+		std::string commandArr[MAXCOMMANDS];
+        
+		int nrOfCommands = parseCommandString(userCommand, commandArr);
         if (nrOfCommands > 0) {
 			
-			//std::cout << commandArr[1] << std::endl; for debugging only!
+			//std::cout << commandArr[1] << std::endl; //for debugging only!
             
 			int cIndex = findCommand(commandArr[0]);
             switch(cIndex) {
@@ -88,7 +89,7 @@ int main(void) {
 				fs.goToFolder(commandArr[1]);
                 break;
             case 13: // pwd
-                fs.printCurrentWorkingDirectory();
+				std::cout << '/' + fs.printCurrentWorkingDirectory() + '\n';
                 break;
             case 14: // help
                 std::cout << help() << std::endl;
