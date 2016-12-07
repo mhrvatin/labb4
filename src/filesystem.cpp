@@ -1,4 +1,5 @@
 #include "filesystem.h"
+#include <stack>
 
 FileSystem::FileSystem() {
   this->mMemBlockDevice = MemBlockDevice(this->BLOCK_ARRAY_SIZE);
@@ -31,7 +32,7 @@ std::string FileSystem::printContents(std::string fileName) {
     }
 	}
 
-  return contents; // implement proper return value
+  return contents; 
 }
 
 std::string FileSystem::printCurrentWorkingDirectory() {
@@ -96,6 +97,23 @@ std::string FileSystem::listDir(std::string dir) {
 
 int FileSystem::createFile(std::string fileName) {
   int ret = -1;
+	
+  std::string destFile[2];
+  seperateDir(fileName, destFile);
+  Bnode* destination;
+  
+  if (destFile[0] != "")
+  {
+	destination = findDir(destFile[0]);
+	if(destination == nullptr)
+	{
+		return ret;
+	}
+  }
+  else
+  {
+	destination = mWalker.getLookingAt();
+  }
 
   if (fileName.length() > 0) {
     ret = 1;
@@ -104,9 +122,9 @@ int FileSystem::createFile(std::string fileName) {
 
     tmp = "test test"; // TODO: user should be able to input text in file by themself 
     tmp.resize(512);
-      
+
     if (blockNr != -1) { // empty blocks are still available
-      Fnode* file = new Fnode(tmp, mWalker.getLookingAt()->getPath(), fileName, mWalker.getLookingAt(), blockNr);	
+      Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], destination->getDotDot(), blockNr);	
       std::string tmp = file->getData();
       std::cout << "file->getData() size:" << tmp.size() << "." << std::endl;
       
@@ -117,7 +135,7 @@ int FileSystem::createFile(std::string fileName) {
       }
 
       this->setBlockNrPos(blockNr);
-      mRoot->addNode(file);
+      dynamic_cast<Dnode*>(destination)->addNode(file);
     } else {
       std::cout << "No empty blocks left" << std::endl; // for debuging
     }
@@ -323,3 +341,35 @@ int FileSystem::copyFile(std::string file, std::string newFilePath)
 
 	return exitStatus;
 }
+
+void FileSystem::seperateDir(std::string dir, std::string destFile[])
+{
+	std::stack<char> theStack;
+	
+	std::string fileName;
+
+	for(int i = dir.size(); i >= 0; i--)
+	{
+		if (dir[i] != '/')
+		{
+			theStack.push(dir[i]);	
+			dir.erase(i, 1);
+		}
+		else
+		{
+			dir.erase(i,1);
+			break;
+		}
+	}
+	while (!theStack.empty())
+	{
+		fileName += theStack.top();
+		theStack.pop();
+	}
+	
+
+	destFile[0] = dir;
+	destFile[1] = fileName;
+
+}
+
