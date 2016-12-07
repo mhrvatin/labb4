@@ -50,7 +50,19 @@ int main(void) {
 				        std::cout << fs.listDir(commandArr[1]);
                 break;
             case 3: // create
-				        fs.createFile(commandArr[1]);
+                exitStatus = fs.createFile(commandArr[1]);
+                
+                switch (exitStatus) {
+                  case -2:
+                    std::cout << "No empty blocks left. File not written to disk." << std::endl;
+                    break;
+                  case -1:
+                    std::cout << "Something went wrong when writing block." << std::endl;
+                    break;
+                  case 1:
+                    // all ok
+                    break;
+                }
                 break;
             case 4: // cat
                 std::cout << fs.printContents(commandArr[1]) << std::endl;
@@ -64,19 +76,19 @@ int main(void) {
                 fs.removeFile(commandArr[1]);
                 break;
             case 8: // cp
-				exitStatus = fs.copyFile(commandArr[1], commandArr[2]);
-				if (exitStatus == -1)
-				{
-					std::cout << "No such file: " + commandArr[1] << std::endl;
-				}
-				else if (exitStatus == -2)
-				{
-					std::cout << "Disk is full." << std::endl;
-				}
-				else if (exitStatus == -3)
-				{
-					std::cout << "cp: missing destination file operand after " + commandArr[1] << std::endl;
-				}
+                exitStatus = fs.copyFile(commandArr[1], commandArr[2]);
+                
+                switch (exitStatus) {
+                  case -1:
+                    std::cout << "No such file: " + commandArr[1] << std::endl;
+                    break;
+                  case -2:
+                    std::cout << "Disk is full." << std::endl;
+                    break;
+                  case -3:
+                    std::cout << "cp: missing destination file operand after " + commandArr[1] << std::endl;
+                    break;
+                }
                 break;
             case 9: // append
                 break;
@@ -86,10 +98,10 @@ int main(void) {
                 fs.createFolder(commandArr[1]);
                 break;
             case 12: // cd
-				fs.goToFolder(commandArr[1]);
+                fs.goToFolder(commandArr[1]);
                 break;
             case 13: // pwd
-				std::cout << '/' + fs.printCurrentWorkingDirectory() + '\n';
+                std::cout << '/' + fs.printCurrentWorkingDirectory() + '\n';
                 break;
             case 14: // help
                 std::cout << help() << std::endl;

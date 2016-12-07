@@ -75,6 +75,7 @@ public:
     void deleteBlockNrPos(int idx);
     bool getBlockNrStatus(int idx);
     int getFirstEmptyBlockNr();
+    void emptyTree(Bnode* node);
 };
 
 #endif // FILESYSTEM_H
