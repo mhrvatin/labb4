@@ -1,5 +1,5 @@
 #include "filesystem.h"
-#include <stack>
+
 
 FileSystem::FileSystem() {
   this->mMemBlockDevice = MemBlockDevice(this->BLOCK_ARRAY_SIZE);
@@ -10,8 +10,26 @@ FileSystem::~FileSystem() {
 			delete this->mRoot;
 }
 int FileSystem::createFolder(std::string folderName) {
-  dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getLookingAt()->getPath() + 
-			folderName + "/", folderName, mWalker.getLookingAt()));
+  int ret = -1;
+  std::vector<std::string> destFile = seperateDir(folderName); 
+  Bnode* destination;
+  
+  if (destFile[0] != "")
+  {
+	destination = findDir(destFile[0]);
+	if(destination == nullptr)
+	{
+		return ret;
+	}
+  }
+  else
+  {
+	destination = mWalker.getLookingAt();
+  }
+
+
+  dynamic_cast<Dnode*>(destination)->addNode(new Dnode(destination->getPath() + 
+			destFile[1] + "/", destFile[1], destination));
 
   return 1; // implement proper return value
 }
@@ -29,7 +47,7 @@ std::string FileSystem::printContents(std::string fileName) {
 
       Block block = this->mMemBlockDevice.readBlock(foundFile->getBlockNr());
       contents = block.toString();
-    }
+		}
 	}
 
   return contents; 
@@ -95,10 +113,8 @@ std::string FileSystem::listDir(std::string dir) {
 }
 
 int FileSystem::createFile(std::string fileName) {
-  int ret = -1;
-	
-  std::string destFile[2];
-  seperateDir(fileName, destFile);
+  int ret = -1;	
+  std::vector<std::string> destFile = seperateDir(fileName);
   Bnode* destination;
   
   if (destFile[0] != "")
@@ -114,7 +130,7 @@ int FileSystem::createFile(std::string fileName) {
 	destination = mWalker.getLookingAt();
   }
 
-  if (fileName.length() > 0) {
+ if (fileName.length() > 0) {
     ret = 1;
     std::string tmp;
     int blockNr = this->getFirstEmptyBlockNr();
@@ -123,7 +139,7 @@ int FileSystem::createFile(std::string fileName) {
     tmp.resize(512);
 
     if (blockNr != -1) { // empty blocks are still available
-      Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], destination->getDotDot(), blockNr);	
+      Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], destination, blockNr);	
       std::string tmp = file->getData();
       
       if (mMemBlockDevice.writeBlock(blockNr, file->getData()) != 1) {
@@ -351,34 +367,21 @@ int FileSystem::copyFile(std::string file, std::string newFilePath)
 	return exitStatus;
 }
 
-void FileSystem::seperateDir(std::string dir, std::string destFile[])
+std::vector<std::string> FileSystem::seperateDir(const std::string & dir)
 {
-	std::stack<char> theStack;
-	
-	std::string fileName;
-
-	for(int i = dir.size(); i >= 0; i--)
+	std::vector<std::string> returnVector;
+	returnVector.resize(2);
+	if (dir.rfind("/") != -1)
 	{
-		if (dir[i] != '/')
-		{
-			theStack.push(dir[i]);	
-			dir.erase(i, 1);
-		}
-		else
-		{
-			dir.erase(i,1);
-			break;
-		}
+		returnVector[1] = dir.substr(dir.rfind("/") + 1);
+		returnVector[0] = dir.substr(0, dir.rfind("/"));
 	}
-	while (!theStack.empty())
+	else
 	{
-		fileName += theStack.top();
-		theStack.pop();
+		returnVector[1] = dir;
+		returnVector[0] = "";
 	}
-	
 
-	destFile[0] = dir;
-	destFile[1] = fileName;
-
+	return returnVector;
 }
 

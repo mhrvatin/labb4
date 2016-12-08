@@ -75,7 +75,7 @@ public:
     void deleteBlockNrPos(int idx);
     bool getBlockNrStatus(int idx);
     int getFirstEmptyBlockNr();
-	  void seperateDir(std::string, std::string destFile[]);
+	std::vector<std::string> seperateDir(const std::string & dir);
     void initFileSystem();
     void emptyTree(Dnode* node);
 };
