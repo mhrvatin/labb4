@@ -16,7 +16,6 @@ int findCommand(std::string &command);
 std::string help();
 
 int main(void) {
-	
 	FileSystem fs = FileSystem();
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@";    // Change this if you want another user to be displayed	
