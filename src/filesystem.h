@@ -24,7 +24,7 @@ private:
     
     Dnode* mRoot;
     Walker mWalker;
-    bool blockNrs[BLOCK_ARRAY_SIZE];
+    bool mBlockNrs[BLOCK_ARRAY_SIZE];
 public:
 
     FileSystem();
@@ -48,7 +48,7 @@ public:
     std::string printContents(std::string fileName);
 
     // print out current working directory
-	std::string printCurrentWorkingDirectory();
+	  std::string printCurrentWorkingDirectory();
 
     /* Removes a file in the filesystem */
     int removeFile(std::string fileName);
@@ -75,8 +75,9 @@ public:
     void deleteBlockNrPos(int idx);
     bool getBlockNrStatus(int idx);
     int getFirstEmptyBlockNr();
-
-	void seperateDir(std::string, std::string destFile[]);
+	  void seperateDir(std::string, std::string destFile[]);
+    void initFileSystem();
+    void emptyTree(Dnode* node);
 };
 
 #endif // FILESYSTEM_H

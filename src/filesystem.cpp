@@ -36,21 +36,22 @@ std::string FileSystem::printContents(std::string fileName) {
 }
 
 std::string FileSystem::printCurrentWorkingDirectory() {
-  
   return mWalker.getLookingAt()->getPath();
-
 }
 
 int FileSystem::removeFile(std::string fileName) {
   bool hit = false;
   std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
   
-  for (unsigned int i = 0; i < files.size(); i++) {
+  for (unsigned int i = 0; i < files.size() && !hit; i++) {
     if (files.at(i)->getName() == fileName) {
 			if(dynamic_cast<Fnode*>(files.at(i)))
 			{			
 				hit = true;
+        Fnode* fileToDelete = dynamic_cast<Fnode*>(files.at(i));
+
 				dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->removeNode(i);
+        this->deleteBlockNrPos(fileToDelete->getBlockNr()); // set file's block position as empty
 			}
 		}
 	}
@@ -58,13 +59,11 @@ int FileSystem::removeFile(std::string fileName) {
   if (!hit) {
     std::cout << "No such file." << std::endl;
   }
-  
 
   return 1; // implement proper return value
 }
 
 std::string FileSystem::listDir(std::string dir) { 
-	
 	Bnode* cdDir;
 
 	if(dir == "") 
@@ -126,18 +125,15 @@ int FileSystem::createFile(std::string fileName) {
     if (blockNr != -1) { // empty blocks are still available
       Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], destination->getDotDot(), blockNr);	
       std::string tmp = file->getData();
-      std::cout << "file->getData() size:" << tmp.size() << "." << std::endl;
       
-      if (mMemBlockDevice.writeBlock(blockNr, file->getData()) == 1) {
-        std::cout << "filesystem::createFile: block written!" << std::endl; // for debuging
-      } else {
-        std::cout << "filesystem::createFile: an error occured" << std::endl; // for debuging
+      if (mMemBlockDevice.writeBlock(blockNr, file->getData()) != 1) {
+        ret = -1; // generic error
       }
 
       this->setBlockNrPos(blockNr);
       dynamic_cast<Dnode*>(destination)->addNode(file);
     } else {
-      std::cout << "No empty blocks left" << std::endl; // for debuging
+      ret = -2; // no empty blocks left
     }
   }
 	
@@ -193,8 +189,9 @@ Bnode* FileSystem::findDir(std::string dir)
 			dirs.push_back(theDir);
 			theDir = "";
 		}
-		else
+		else {
 			theDir += dir[i];
+    }
 	}
 	/*
 	for(unsigned int i = 0; i < dirs.size(); i++)	
@@ -261,30 +258,42 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 
 int FileSystem::format() {
   int firstEmptyBlock = this->getFirstEmptyBlockNr();
-  if (firstEmptyBlock != -1) { // fs is already empty
-    this->mRoot = new Dnode();
-    this->mWalker = Walker(this->mRoot, nullptr);
 
-    for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
-      this->blockNrs[i] = false;
-    }
+  if (firstEmptyBlock == 1) { // fs is already empty
+    this->initFileSystem();
   } else { // empty the fs
+    //emptyTree(this->mRoot);
+    delete this->mRoot;
 
+    initFileSystem();
   }
   
   return 1; // implement proper return value
 }
 
+void FileSystem::initFileSystem() {
+    this->mRoot = new Dnode();
+    this->mWalker = Walker(this->mRoot, nullptr);
+
+    for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
+      this->mBlockNrs[i] = false;
+    }
+}
+
+void FileSystem::emptyTree(Dnode* node) {
+  delete node;
+}
+
 void FileSystem::setBlockNrPos(int idx) {
-  this->blockNrs[idx] = true;
+  this->mBlockNrs[idx] = true;
 }
 
 void FileSystem::deleteBlockNrPos(int idx) {
-  this->blockNrs[idx] = false;
+  this->mBlockNrs[idx] = false;
 }
 
 bool FileSystem::getBlockNrStatus(int idx) {
-  return this->blockNrs[idx];
+  return this->mBlockNrs[idx];
 }
 
 int FileSystem::getFirstEmptyBlockNr() {
