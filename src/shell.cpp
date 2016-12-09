@@ -42,7 +42,17 @@ int main(void) {
                 std::cout << "Exiting\n";
                 break;
             case 1: // format
-                fs.format();
+                switch (fs.format()) {
+                  case -1:
+                    std::cout << "Something went wrong." << std::endl;
+                    break;
+                  case 1:
+                    std::cout << "Filesystem created." << std::endl;
+                    break;
+                  case 2:
+                    std::cout << "Filesystem erased and formatted" << std::endl;
+                    break;
+                }
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl; 
@@ -72,7 +82,9 @@ int main(void) {
             case 6: // restoreImage
                 break;
             case 7: // rm
-                fs.removeFile(commandArr[1]);
+                if (fs.removeFile(commandArr[1]) == -1) {
+                  std::cout << "No such file." << std::endl;
+                }
                 break;
             case 8: // cp
                 exitStatus = fs.copyFile(commandArr[1], commandArr[2]);
@@ -97,10 +109,12 @@ int main(void) {
                 fs.createFolder(commandArr[1]);
                 break;
             case 12: // cd
-                fs.goToFolder(commandArr[1]);
+                if (fs.goToFolder(commandArr[1]) == -1) {
+                    std::cout << "cd: not a directory: " << commandArr[1] << std::endl;
+                }
                 break;
             case 13: // pwd
-                std::cout << '/' + fs.printCurrentWorkingDirectory() + '\n';
+                std::cout << "/" + fs.printCurrentWorkingDirectory() << std::endl;
                 break;
             case 14: // help
                 std::cout << help() << std::endl;

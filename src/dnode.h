@@ -13,9 +13,13 @@ public:
 	Dnode();
 	Dnode(std::string path, std::string name, Bnode* dotdot);	
 	virtual ~Dnode();
-	int addNode(Bnode* node);
+	void addNode(Bnode* node);
 	std::vector<Bnode*> getFiles();
 	void setFiles(std::vector<Bnode*> files);
-	int removeNode(int position);
+	void removeNode(int position);
+  template<typename Ar>
+  void serialize(Ar& ar, const int) {
+    boost::serialization::base_object<Bnode>(*this);
+  }
 };
 #endif

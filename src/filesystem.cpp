@@ -9,11 +9,10 @@ FileSystem::FileSystem() {
 FileSystem::~FileSystem() {
 			delete this->mRoot;
 }
-int FileSystem::createFolder(std::string folderName) {
+
+void FileSystem::createFolder(std::string folderName) {
   dynamic_cast<Dnode*>(mWalker.getLookingAt())->addNode(new Dnode(mWalker.getLookingAt()->getPath() + 
 			folderName + "/", folderName, mWalker.getLookingAt()));
-
-  return 1; // implement proper return value
 }
 
 std::string FileSystem::printContents(std::string fileName) {
@@ -23,6 +22,11 @@ std::string FileSystem::printContents(std::string fileName) {
   std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
   
   for (unsigned int i = 0; i < files.size() && !hit; i++) {
+    std::cout << "files.at(" << i << ")->getName(): " << files.at(i)->getName() << "<-end" << std::endl;
+    std::cout << "files.at(" << i << ")->getName().size(): " << files.at(i)->getName().size() << "<-end" << std::endl;
+    std::cout << "fileName: " << fileName << "<-end" << std::endl;
+    std::cout << "fileName.size(): " << fileName.size() << "<-end" << std::endl;
+
     if (dynamic_cast<Fnode*>(files.at(i)) && files.at(i)->getName() == fileName) {
       hit = true;
       Fnode* foundFile = dynamic_cast<Fnode*>(files.at(i));
@@ -30,6 +34,21 @@ std::string FileSystem::printContents(std::string fileName) {
       Block block = this->mMemBlockDevice.readBlock(foundFile->getBlockNr());
       contents = block.toString();
     }
+
+    // debuggin
+    /*if (dynamic_cast<Fnode*>(files.at(i))) {
+      std::cout << "casted!" << std::endl;
+
+      if (files.at(i)->getName() == fileName) {
+        std::cout << "names match!" << std::endl;
+
+        hit = true;
+        Fnode* foundFile = dynamic_cast<Fnode*>(files.at(i));
+
+        Block block = this->mMemBlockDevice.readBlock(foundFile->getBlockNr());
+        contents = block.toString();
+      }
+    }*/
 	}
 
   return contents; 
@@ -40,14 +59,14 @@ std::string FileSystem::printCurrentWorkingDirectory() {
 }
 
 int FileSystem::removeFile(std::string fileName) {
-  bool hit = false;
+  int ret = -1;
   std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
   
-  for (unsigned int i = 0; i < files.size() && !hit; i++) {
+  for (unsigned int i = 0; i < files.size() && ret == -1; i++) {
     if (files.at(i)->getName() == fileName) {
 			if(dynamic_cast<Fnode*>(files.at(i)))
 			{			
-				hit = true;
+        ret = 1;
         Fnode* fileToDelete = dynamic_cast<Fnode*>(files.at(i));
 
 				dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->removeNode(i);
@@ -56,15 +75,12 @@ int FileSystem::removeFile(std::string fileName) {
 		}
 	}
 
-  if (!hit) {
-    std::cout << "No such file." << std::endl;
-  }
-
-  return 1; // implement proper return value
+  return ret;
 }
 
 std::string FileSystem::listDir(std::string dir) { 
 	Bnode* cdDir;
+	std::string listDirs = "";
 
 	if(dir == "") 
 	{
@@ -75,8 +91,6 @@ std::string FileSystem::listDir(std::string dir) {
 		cdDir = findDir(dir);
 	}
 	
-	std::string listDirs = "";
-
 	if (cdDir != nullptr)
 	{
 		std::vector<Bnode*> files = dynamic_cast<Dnode*>(cdDir)->getFiles(); 
@@ -91,7 +105,7 @@ std::string FileSystem::listDir(std::string dir) {
 	}	
 
 
-		return listDirs;
+	return listDirs;
 }
 
 int FileSystem::createFile(std::string fileName) {
@@ -101,17 +115,14 @@ int FileSystem::createFile(std::string fileName) {
   seperateDir(fileName, destFile);
   Bnode* destination;
   
-  if (destFile[0] != "")
-  {
-	destination = findDir(destFile[0]);
-	if(destination == nullptr)
-	{
-		return ret;
-	}
-  }
-  else
-  {
-	destination = mWalker.getLookingAt();
+  if (destFile[0] != "") {
+	  destination = findDir(destFile[0]);
+
+	  if(destination == nullptr) {
+		  return ret;
+	  }
+  } else {
+	  destination = mWalker.getLookingAt();
   }
 
   if (fileName.length() > 0) {
@@ -119,7 +130,8 @@ int FileSystem::createFile(std::string fileName) {
     std::string tmp;
     int blockNr = this->getFirstEmptyBlockNr();
 
-    tmp = "test test"; // TODO: user should be able to input text in file by themself 
+    tmp = "tmp-value"; // TODO: user should be able to input text in file by themself 
+    //std::cin >> tmp;
     tmp.resize(512);
 
     if (blockNr != -1) { // empty blocks are still available
@@ -142,34 +154,30 @@ int FileSystem::createFile(std::string fileName) {
 
 
 int FileSystem::createImage() {
-  /*std::string loggedInUser = getlogin();
-  std::string path = "/home/" + loggedInUser + "/labb4_filesystem_image";
+  std::string loggedInUser = getlogin();
+  std::string path = "/home/" + loggedInUser + "/labb4_filesystem_image.ser";
   std::cout << loggedInUser << std::endl; // print logged in user
 
-  //std::ofstream fsImage(path, std::ios::out | std::ofstream::binary);
-  //std::copy(mRoot->getFiles().begin(), mRoot->getFiles().end(), std::ostreambuf_iterator<char>(fsImage));
-  std::ofstream fsImage(path);
-  std::ostream_iterator<std::string> output_iterator(fsImage, "\n");
-  std::copy(mRoot->getFiles().begin, mRoot->getFiles().end(), output_iterator);*/
+  std::ofstream outputFilestream(path);
+  boost::archive::text_oarchive outputArchive(outputFilestream);
+  outputArchive & this->mRoot;
 
   return 1; // fix proper return value
 }
 
 int FileSystem::goToFolder(std::string dir)
 {
-	
+	int ret = -1;
 	Bnode* cdNode = findDir(dir);
 
-	if (cdNode == nullptr)
-	{
-		std::cout <<"cd: " + dir + ": Not a directory" + '\n';
-	}
-	else
-	{
+	if (cdNode != nullptr) {
+    ret = 1;
+
 		mWalker.setLookingAt(cdNode);
 		mWalker.setPrev(cdNode->getDotDot());
 	}
-	return 1; // Fix proper return-value
+
+	return ret;
 }
 
 Bnode* FileSystem::findDir(std::string dir)
@@ -257,18 +265,20 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 }
 
 int FileSystem::format() {
-  int firstEmptyBlock = this->getFirstEmptyBlockNr();
+  int firstEmptyBlock = this->getFirstEmptyBlockNr(),
+      ret = -1;
 
   if (firstEmptyBlock == 1) { // fs is already empty
     this->initFileSystem();
+    ret = 1; // filesystem created from scratch
   } else { // empty the fs
-    //emptyTree(this->mRoot);
     delete this->mRoot;
 
     initFileSystem();
+    ret = 2; // filesystem erased and formatted
   }
   
-  return 1; // implement proper return value
+  return ret; // implement proper return value
 }
 
 void FileSystem::initFileSystem() {
@@ -278,10 +288,6 @@ void FileSystem::initFileSystem() {
     for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
       this->mBlockNrs[i] = false;
     }
-}
-
-void FileSystem::emptyTree(Dnode* node) {
-  delete node;
 }
 
 void FileSystem::setBlockNrPos(int idx) {

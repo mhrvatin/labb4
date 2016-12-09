@@ -2,9 +2,13 @@
 #define FILESYSTEM_H
 
 #include <algorithm> // writing/reading vector to/from file
-#include <fstream>
 #include <iostream>  // writing/reading vector to/from file
+#include <fstream>   // writing/reading vector to/from file
 #include <iterator>  // writing/reading vector to/from file
+
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 #include <unistd.h>    // getting userid
 
@@ -42,7 +46,7 @@ public:
     int createFile(std::string fileName);
 
     /* Creates a folder in the filesystem */
-    int createFolder(std::string folderName);
+    void createFolder(std::string folderName);
 
     // gets the contents of the file
     std::string printContents(std::string fileName);
@@ -77,7 +81,6 @@ public:
     int getFirstEmptyBlockNr();
 	  void seperateDir(std::string, std::string destFile[]);
     void initFileSystem();
-    void emptyTree(Dnode* node);
 };
 
 #endif // FILESYSTEM_H
