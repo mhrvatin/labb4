@@ -19,10 +19,8 @@ Dnode::~Dnode()
 	}
 }
 
-int Dnode::addNode(Bnode* node) {
+void Dnode::addNode(Bnode* node) {
   this->files.push_back(node);
-
-  return 1; // implement proper return value
 }
 
 std::vector<Bnode*> Dnode::getFiles() {
@@ -33,11 +31,10 @@ void Dnode::setFiles(std::vector<Bnode*> files) {
   this->files = files;
 }
 
-int Dnode::removeNode(int position)
+void Dnode::removeNode(int position)
 {
 	Bnode* theNode = this->files.at(position);
 	this->files.erase(this->files.begin() + position);
-	delete theNode;
 
-  return 1; //implement proper return value
+  delete theNode;
 }

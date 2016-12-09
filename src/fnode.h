@@ -23,5 +23,9 @@ public:
 	std::string getData();
 	int getBlockNr();
 	void setBlockNr(int blockNr);
+  template<typename Ar>
+  void serialize(Ar& ar, const int) {
+    boost::serialization::base_object<Bnode>(*this);
+  }
 };
 #endif

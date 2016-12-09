@@ -1,4 +1,9 @@
+#include <boost/serialization/export.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 #include "bnode.h"
+
+BOOST_CLASS_EXPORT_IMPLEMENT(Bnode);
 
 Bnode::Bnode()
 {
@@ -41,4 +46,3 @@ Bnode* Bnode::getDotDot()
 std::string Bnode::getPath() const {
 	return this->path;
 }
-
