@@ -80,6 +80,7 @@ int main(void) {
                 fs.createImage();
                 break;
             case 6: // restoreImage
+                fs.restoreImage();
                 break;
             case 7: // rm
                 if (fs.removeFile(commandArr[1]) == -1) {

@@ -4,10 +4,9 @@
 #include <vector>
 #include "bnode.h"
 
-class Dnode: public Bnode
-{
+class Dnode: public Bnode {
 private:
-	std::vector<Bnode*> files;
+	std::vector<Bnode*> mFiles;
 
 public:
 	Dnode();
@@ -17,9 +16,6 @@ public:
 	std::vector<Bnode*> getFiles();
 	void setFiles(std::vector<Bnode*> files);
 	void removeNode(int position);
-  template<typename Ar>
-  void serialize(Ar& ar, const int) {
-    boost::serialization::base_object<Bnode>(*this);
-  }
 };
+
 #endif

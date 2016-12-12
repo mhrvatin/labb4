@@ -1,10 +1,7 @@
 #ifndef FILESYSTEM_H
 #define FILESYSTEM_H
 
-#include <algorithm> // writing/reading vector to/from file
-#include <iostream>  // writing/reading vector to/from file
-#include <fstream>   // writing/reading vector to/from file
-#include <iterator>  // writing/reading vector to/from file
+#include <fstream>
 
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -18,13 +15,11 @@
 #include "dnode.h"
 #include "fnode.h"
 
-class FileSystem
-{
+class FileSystem {
 public:
     static const int BLOCK_ARRAY_SIZE = 250;
 private:
     MemBlockDevice mMemBlockDevice;
-    // Here you can add your own data structures
     
     Dnode* mRoot;
     Walker mWalker;
@@ -36,11 +31,6 @@ public:
 	  
     Bnode* findDir(std::string dir);
 	  Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
-
-    /* These commands needs to implemented
-     *
-     * However, you are free to change the parameterlist and specify your own returntype for each function below.
-     */
 
     /* This function creates a file in the filesystem */
     int createFile(std::string fileName);
@@ -57,9 +47,6 @@ public:
     /* Removes a file in the filesystem */
     int removeFile(std::string fileName);
 
-    /* Removes a folder in the filesystem */
-    // removeFolder(...);
-
     // Copy file
     int copyFile(std::string file, std::string newFilePath = "");
 
@@ -70,7 +57,10 @@ public:
     std::string listDir(std::string dir);
 
     // Writes the virtual file system to a file on the actual file system
-    int createImage();
+    void createImage();
+
+    // Reads a file on the actual file system to create the virtual file system
+    int restoreImage();
 
     // formats the file system
     int format();
@@ -79,7 +69,7 @@ public:
     void deleteBlockNrPos(int idx);
     bool getBlockNrStatus(int idx);
     int getFirstEmptyBlockNr();
-	std::vector<std::string> seperateDir(const std::string & dir);
+	  std::vector<std::string> seperateDir(const std::string & dir);
     void initFileSystem();
 };
 

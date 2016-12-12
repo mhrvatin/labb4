@@ -1,48 +1,37 @@
-#include <boost/serialization/export.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
 #include "bnode.h"
 
-BOOST_CLASS_EXPORT_IMPLEMENT(Bnode);
-
-Bnode::Bnode()
-{
-	this->path = "";
-	this->name = "";
-	this->dotdot = nullptr;
+Bnode::Bnode() {
+	this->mPath = "";
+	this->mName = "";
+	this->mDotdot = nullptr;
 }
 
-Bnode::Bnode(std::string path, std::string name, Bnode* dotdot)
-{
-	this->path = path;
-	this->name = name;
-	this->dotdot = dotdot;
+Bnode::Bnode(std::string path, std::string name, Bnode* dotdot) {
+	this->mPath = path;
+	this->mName = name;
+	this->mDotdot = dotdot;
 }
 
-Bnode::Bnode(Bnode const& other)
-{
-	this->path = other.path;
-	this->name = other.name;
-	this->dotdot = other.dotdot;
+Bnode::Bnode(Bnode const& other) {
+	this->mPath = other.mPath;
+	this->mName = other.mName;
+	this->mDotdot = other.mDotdot;
 }
 
-Bnode::~Bnode() {
-}
+Bnode::~Bnode() { }
 
 std::string Bnode::getName() const {
-  return this->name;
+  return this->mName;
 }
 
-void Bnode::setPath(std::string path)
-{
-	this->path = path;
+void Bnode::setPath(std::string path) {
+	this->mPath = path;
 }
 
-Bnode* Bnode::getDotDot()
-{
-	return this->dotdot;
+Bnode* Bnode::getDotDot() {
+	return this->mDotdot;
 }
 
 std::string Bnode::getPath() const {
-	return this->path;
+	return this->mPath;
 }

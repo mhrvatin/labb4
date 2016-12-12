@@ -1,6 +1,5 @@
 #include "filesystem.h"
 
-
 FileSystem::FileSystem() {
   this->mMemBlockDevice = MemBlockDevice(this->BLOCK_ARRAY_SIZE);
   this->format();
@@ -24,6 +23,8 @@ void FileSystem::createFolder(std::string folderName) {
   }
 
 
+  // don't allocate vector dynamically:
+  // http://stackoverflow.com/questions/9437109/serialization-using-boost-serialization
   dynamic_cast<Dnode*>(destination)->addNode(new Dnode(destination->getPath() + 
 			destFile[1] + "/", destFile[1], destination));
 }
@@ -137,16 +138,10 @@ int FileSystem::createFile(std::string fileName) {
 }
 
 
-int FileSystem::createImage() {
-  std::string loggedInUser = getlogin();
-  std::string path = "/home/" + loggedInUser + "/labb4_filesystem_image.ser";
-  std::cout << loggedInUser << std::endl; // print logged in user
+void FileSystem::createImage() {
+}
 
-  std::ofstream outputFilestream(path);
-  boost::archive::text_oarchive outputArchive(outputFilestream);
-  outputArchive & this->mRoot;
-
-  return 1; // fix proper return value
+int FileSystem::restoreImage() {
 }
 
 int FileSystem::goToFolder(std::string dir) {
