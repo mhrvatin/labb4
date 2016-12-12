@@ -59,7 +59,7 @@ public:
 	  Dnode* traverseTree(std::vector<std::string> dir, int size, Dnode* theNode);
 
     // Formats the file system
-    int format();
+    void format();
 
     // Initialize a new file system
     void initFileSystem();

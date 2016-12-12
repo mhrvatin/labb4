@@ -2,7 +2,7 @@
 
 FileSystem::FileSystem() {
   this->mMemBlockDevice = MemBlockDevice(this->BLOCK_ARRAY_SIZE);
-  this->format();
+  this->initFileSystem();
 }
 
 FileSystem::~FileSystem() {
@@ -217,21 +217,10 @@ Dnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Dnode* t
 	}
 }
 
-int FileSystem::format() {
-  int firstEmptyBlock = this->getFirstEmptyBlockNr(),
-      ret = -1;
+void FileSystem::format() {
+  delete this->mRoot;
 
-  if (firstEmptyBlock == 1) { // fs is already empty
-    this->initFileSystem();
-    ret = 1; // filesystem created from scratch
-  } else { // empty the fs
-    delete this->mRoot;
-
-    initFileSystem();
-    ret = 2; // filesystem erased and formatted
-  }
-  
-  return ret; // implement proper return value
+  initFileSystem();
 }
 
 void FileSystem::initFileSystem() {
