@@ -2,17 +2,15 @@
 #define FNODE_H
 
 #include "bnode.h"
-#include "memblockdevice.h"
 
 class Fnode: public Bnode {
 private:
 	std::string mFdata;
 	int mBlockNr;
-	MemBlockDevice mMemBlockDevice;
 
 public:
 	Fnode();
-	Fnode(std::string fdata, std::string path, std::string name, Bnode* dotdot, int blockNr);
+	Fnode(std::string fdata, std::string path, std::string name, int blockNr);
 	Fnode(std::string fdata);
 	Fnode(Fnode const& other);
 	~Fnode();

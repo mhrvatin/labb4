@@ -1,40 +1,30 @@
 #include "walker.h"
 
-Walker::Walker()
-{
-	this->lookingAt = nullptr;
-	this->prev = nullptr;
-
+Walker::Walker() {
+	this->mLookingAt = nullptr;
+	this->mPrev = nullptr;
 }
 
-Walker::~Walker()
-{
+Walker::~Walker() {}
 
+Walker::Walker(Dnode* lookingAt, Dnode* prev) {
+	this->mLookingAt = lookingAt;
+	this->mPrev = prev;
 }
 
-Walker::Walker(Bnode* lookingAt, Bnode* prev)
-{
-	this->lookingAt = lookingAt;
-	this->prev = prev;
-	
-}
-
-Bnode* Walker::getLookingAt() {
-  return this->lookingAt;
+Dnode* Walker::getLookingAt() {
+  return this->mLookingAt;
 }
 
 
-void Walker::setLookingAt(Bnode* lookingAt)
-{		
-	this->lookingAt = lookingAt;
+void Walker::setLookingAt(Dnode* lookingAt) {		
+	this->mLookingAt = lookingAt;
 }
 
-void Walker::setPrev(Bnode* prev)
-{
-	this->prev = prev;
+void Walker::setPrev(Dnode* prev) {
+	this->mPrev = prev;
 }
 
-Bnode* Walker::getPrev()
-{
-	return this->prev;
+Dnode* Walker::getPrev() {
+	return this->mPrev;
 }

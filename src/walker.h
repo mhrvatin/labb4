@@ -2,29 +2,21 @@
 #define WALKER_H
 
 #include <string>
-#include "bnode.h"
+#include "dnode.h"
 
-class Walker
-{
-
+class Walker {
 private:	
-	Bnode* lookingAt;
-	Bnode* prev;
-	std::string cwd;
+	Dnode* mLookingAt;
+	Dnode* mPrev;
+	//std::string mCwd;
 
 public:
 	Walker();
 	~Walker();
-	Walker(Bnode* lookingAt, Bnode* prev);
-
-
-	Bnode* getLookingAt();
-	Bnode* getPrev();
-	
-	void setLookingAt(Bnode* lookingAt);
-	void setPrev(Bnode* prev);
+	Walker(Dnode* lookingAt, Dnode* prev);
+	Dnode* getLookingAt();
+	void setLookingAt(Dnode* lookingAt);
+	void setPrev(Dnode* prev);
+	Dnode* getPrev();
 };
-
-
-
 #endif

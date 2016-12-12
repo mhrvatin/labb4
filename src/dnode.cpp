@@ -2,10 +2,12 @@
 
 Dnode::Dnode() {
 	this->mFiles = std::vector<Bnode*>();
+	this->mDotdot = nullptr;
 }
 
-Dnode::Dnode(std::string path, std::string name, Bnode* dotdot):Bnode(path, name, dotdot) {
+Dnode::Dnode(std::string path, std::string name, Dnode* dotdot):Bnode(path, name) {
 	this->mFiles = std::vector<Bnode*>();
+	this->mDotdot = dotdot;
 }
 
 Dnode::~Dnode() {
@@ -31,4 +33,8 @@ void Dnode::removeNode(int position) {
 	this->mFiles.erase(this->mFiles.begin() + position);
 
   delete theNode;
+}
+
+Dnode* Dnode::getDotDot() {
+  return this->mDotdot;
 }

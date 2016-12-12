@@ -12,7 +12,7 @@ Fnode::Fnode(Fnode const& other) {
 }
 
 
-Fnode::Fnode(std::string fdata, std::string path, std::string name, Bnode* dotdot, int blockNr):Bnode(path, name, dotdot) {
+Fnode::Fnode(std::string fdata, std::string path, std::string name, int blockNr):Bnode(path, name) {
 	this->mFdata = fdata;
   this->mBlockNr = blockNr;
 }

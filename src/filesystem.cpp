@@ -11,7 +11,7 @@ FileSystem::~FileSystem() {
 
 void FileSystem::createFolder(std::string folderName) {
   std::vector<std::string> destFile = separateDir(folderName); 
-  Bnode* destination;
+  Dnode* destination;
   
   if (destFile[0] != "") {
     destination = findDir(destFile[0]);
@@ -121,7 +121,7 @@ int FileSystem::createFile(std::string fileName) {
     tmp.resize(512);
 
     if (blockNr != -1) { // empty blocks are still available
-      Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], destination, blockNr);	
+      Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], blockNr);	
       std::string tmp = file->getData();
        
       if (mMemBlockDevice.writeBlock(blockNr, file->getData()) != 1) {
@@ -147,7 +147,7 @@ int FileSystem::restoreImage() {
 
 int FileSystem::goToFolder(std::string dir) {
 	int ret = -1;
-	Bnode* cdNode = findDir(dir);
+	Dnode* cdNode = findDir(dir);
 
 	if (cdNode != nullptr) {
     ret = 1;
@@ -159,12 +159,11 @@ int FileSystem::goToFolder(std::string dir) {
 	return ret;
 }
 
-Bnode* FileSystem::findDir(std::string dir) {
+Dnode* FileSystem::findDir(std::string dir) {
 	std::string theDir = "";
 	std::vector<std::string> dirs = std::vector<std::string>();
 
 	for(unsigned int i = 0; i < dir.size(); i++) {
-		
 		if (dir[i] == '/' || i == dir.size()-1) {
 			if(i == dir.size()-1) {
 				theDir += dir[i];
@@ -181,8 +180,8 @@ Bnode* FileSystem::findDir(std::string dir) {
 }
 
 
-Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* theNode) {
-	Bnode* returnNode = theNode;
+Dnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Dnode* theNode) {
+	Dnode* returnNode = theNode;
 	// std::cout << "Size of dir.size(): " << dir.size() << std::endl << "Size of size: " << size << std::endl;
 	
 	if(size == dir.size()) {
@@ -198,12 +197,12 @@ Bnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Bnode* t
 			//std::cout << dir[size] << std::endl; # FOR DEBUGGING ONLY
 			std::vector<Bnode*> files = dynamic_cast<Dnode*>(returnNode)->getFiles();
 			returnNode = nullptr;
+
 			for(unsigned int i = 0; i < files.size(); i++) {	
-			
 				if (dynamic_cast<Dnode*>(files.at(i))) {	
 					if(dir[size] == files.at(i)->getName()) {
 						//std::cout << " CHANGING DIRECTORY " + dir[size] + '\n'; //FOR DEBUGGING ONLY
-						returnNode = files.at(i);
+						returnNode = dynamic_cast<Dnode*>(files.at(i));
 						break;
 					} else if (i == files.size()-1) {	
 						size = dir.size()-1;	
@@ -302,7 +301,7 @@ int FileSystem::copyFile(std::string file, std::string newFilePath) {
     
 			if (blockNr != -1) { // no empty blocks left
 				Fnode* file = new Fnode(dynamic_cast<Fnode*>(files[i])->getData(),
-            destination->getPath(), destFile[1], destination, blockNr);	
+            destination->getPath(), destFile[1], blockNr);	
 
 				this->setBlockNrPos(blockNr);
 				dynamic_cast<Dnode*>(destination)->addNode(file);

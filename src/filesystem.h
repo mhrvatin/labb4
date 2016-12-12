@@ -53,10 +53,10 @@ public:
     int goToFolder(std::string dir);
 
     // Helper function to find the directory in a path
-    Bnode* findDir(std::string dir);
+    Dnode* findDir(std::string dir);
 
     // Helper function to traverse the file tree
-	  Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
+	  Dnode* traverseTree(std::vector<std::string> dir, int size, Dnode* theNode);
 
     // Formats the file system
     int format();
