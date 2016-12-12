@@ -3,10 +3,6 @@
 
 #include <fstream>
 
-#include <boost/serialization/vector.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-
 #include <unistd.h>    // getting userid
 
 #include "memblockdevice.h"
@@ -28,16 +24,10 @@ public:
 
     FileSystem();
     ~FileSystem();
-	  
-    Bnode* findDir(std::string dir);
-	  Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
-
-    /* This function creates a file in the filesystem */
-    int createFile(std::string fileName);
 
     /* Creates a folder in the filesystem */
     void createFolder(std::string folderName);
-
+	  
     // gets the contents of the file
     std::string printContents(std::string fileName);
 
@@ -47,14 +37,11 @@ public:
     /* Removes a file in the filesystem */
     int removeFile(std::string fileName);
 
-    // Copy file
-    int copyFile(std::string file, std::string newFilePath = "");
-
-    /* Function will move the current location to a specified location in the filesystem */
-    int goToFolder(std::string dir);
-
     /* This function will get all the files and folders in the specified folder */
     std::string listDir(std::string dir);
+
+    /* This function creates a file in the filesystem */
+    int createFile(std::string fileName);
 
     // Writes the virtual file system to a file on the actual file system
     void createImage();
@@ -62,15 +49,34 @@ public:
     // Reads a file on the actual file system to create the virtual file system
     int restoreImage();
 
-    // formats the file system
+    /* Function will move the current location to a specified location in the filesystem */
+    int goToFolder(std::string dir);
+
+    // Helper function to find the directory in a path
+    Bnode* findDir(std::string dir);
+
+    // Helper function to traverse the file tree
+	  Bnode* traverseTree(std::vector<std::string> dir, int size, Bnode* theNode);
+
+    // Formats the file system
     int format();
 
-    void setBlockNrPos(int idx);
-    void deleteBlockNrPos(int idx);
-    bool getBlockNrStatus(int idx);
-    int getFirstEmptyBlockNr();
-	  std::vector<std::string> seperateDir(const std::string & dir);
+    // Initialize a new file system
     void initFileSystem();
+
+    void setBlockNrPos(int idx);
+
+    void deleteBlockNrPos(int idx);
+    
+    bool getBlockNrStatus(int idx);
+
+    int getFirstEmptyBlockNr();
+
+    // Copy file
+    int copyFile(std::string file, std::string newFilePath = "");
+
+    // Helper function to split a path into path and directory
+	  std::vector<std::string> seperateDir(const std::string & dir);
 };
 
 #endif // FILESYSTEM_H

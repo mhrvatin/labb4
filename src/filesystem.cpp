@@ -8,6 +8,7 @@ FileSystem::FileSystem() {
 FileSystem::~FileSystem() {
   delete this->mRoot;
 }
+
 void FileSystem::createFolder(std::string folderName) {
   std::vector<std::string> destFile = seperateDir(folderName); 
   Bnode* destination;
@@ -110,7 +111,7 @@ int FileSystem::createFile(std::string fileName) {
 	  destination = mWalker.getLookingAt();
   }
 
- if (fileName.length() > 0) {
+  if (fileName.length() > 0) {
     ret = 1;
     std::string tmp;
     int blockNr = this->getFirstEmptyBlockNr();
