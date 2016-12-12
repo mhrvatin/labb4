@@ -19,5 +19,13 @@ public:
 	std::string getData();
 	int getBlockNr();
 	void setBlockNr(int blockNr);
+
+  friend class boost::serialization::access;
+  template<typename Ar>
+  void serialize(Ar& ar, const int version) {
+    ar & boost::serialization::base_object<Bnode>(*this);
+    ar & this->mFdata;
+    ar & this->mBlockNr;
+  }
 };
 #endif

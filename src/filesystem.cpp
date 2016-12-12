@@ -140,9 +140,23 @@ int FileSystem::createFile(std::string fileName) {
 
 
 void FileSystem::createImage() {
+  std::string loggedInUser = getlogin();
+  std::string path = "/home/" + loggedInUser + "/labb4_filesystem_image.ser";
+
+  std::ofstream ofs(path);
+  boost::archive::text_oarchive oa(ofs);
+  oa & this->mRoot;
 }
 
-int FileSystem::restoreImage() {
+void FileSystem::restoreImage() {
+  std::string loggedInUser = getlogin();
+  std::string path = "/home/" + loggedInUser + "/labb4_filesystem_image.ser";
+
+  std::ifstream ifs(path);
+  boost::archive::text_iarchive ia(ifs);
+  this->format();
+  ia & this->mRoot;
+  this->mWalker.setLookingAt(this->mRoot);
 }
 
 int FileSystem::goToFolder(std::string dir) {

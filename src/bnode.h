@@ -2,6 +2,10 @@
 #define BNODE_H
 
 #include <string>
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 /*
  * PURE VIRTUAL
@@ -21,5 +25,13 @@ public:
 	std::string getName() const;
 	void setPath(std::string path);	
 	std::string getPath() const;
+
+  friend class boost::serialization::access;
+
+  template <typename Ar>
+  void serialize(Ar& ar, const int version) {
+    ar & this->mPath;
+    ar & this->mName;
+  }
 };
 #endif

@@ -42,17 +42,7 @@ int main(void) {
                 std::cout << "Exiting\n";
                 break;
             case 1: // format
-                switch (fs.format()) {
-                  case -1:
-                    std::cout << "Something went wrong." << std::endl;
-                    break;
-                  case 1:
-                    std::cout << "Filesystem created." << std::endl;
-                    break;
-                  case 2:
-                    std::cout << "Filesystem erased and formatted" << std::endl;
-                    break;
-                }
+                fs.format();
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl; 

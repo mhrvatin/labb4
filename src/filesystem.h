@@ -2,6 +2,9 @@
 #define FILESYSTEM_H
 
 #include <fstream>
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 #include <unistd.h>    // getting userid
 
@@ -10,6 +13,8 @@
 #include "bnode.h"
 #include "dnode.h"
 #include "fnode.h"
+
+BOOST_CLASS_EXPORT_IMPLEMENT(Fnode);
 
 class FileSystem {
 public:
@@ -47,7 +52,7 @@ public:
     void createImage();
 
     // Reads a file on the actual file system to create the virtual file system
-    int restoreImage();
+    void restoreImage();
 
     /* Function will move the current location to a specified location in the filesystem */
     int goToFolder(std::string dir);
