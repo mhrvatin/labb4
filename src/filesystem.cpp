@@ -10,7 +10,7 @@ FileSystem::~FileSystem() {
 }
 
 void FileSystem::createFolder(std::string folderName) {
-  std::vector<std::string> destFile = seperateDir(folderName); 
+  std::vector<std::string> destFile = separateDir(folderName); 
   Bnode* destination;
   
   if (destFile[0] != "") {
@@ -98,7 +98,7 @@ std::string FileSystem::listDir(std::string dir) {
 
 int FileSystem::createFile(std::string fileName) {
   int ret = -1;	
-  std::vector<std::string> destFile = seperateDir(fileName);
+  std::vector<std::string> destFile = separateDir(fileName);
   Bnode* destination;
   
   if (destFile[0] != "") {
@@ -276,7 +276,7 @@ int FileSystem::copyFile(std::string file, std::string newFilePath) {
 		return exitStatus;	
 	}
 	
-	std::vector<std::string> destFile = seperateDir(newFilePath);
+	std::vector<std::string> destFile = separateDir(newFilePath);
 	Bnode* destination;
   
 	if (destFile[0] != "") {
@@ -325,7 +325,7 @@ int FileSystem::copyFile(std::string file, std::string newFilePath) {
 	return exitStatus;
 }
 
-std::vector<std::string> FileSystem::seperateDir(const std::string & dir) {
+std::vector<std::string> FileSystem::separateDir(const std::string & dir) {
 	std::vector<std::string> returnVector;
 	returnVector.resize(2);
 	

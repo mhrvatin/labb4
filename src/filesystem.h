@@ -76,7 +76,7 @@ public:
     int copyFile(std::string file, std::string newFilePath = "");
 
     // Helper function to split a path into path and directory
-	  std::vector<std::string> seperateDir(const std::string & dir);
+	  std::vector<std::string> separateDir(const std::string & dir);
 };
 
 #endif // FILESYSTEM_H
