@@ -2,6 +2,10 @@
 #define FNODE_H
 
 #include "bnode.h"
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 class Fnode: public Bnode {
 private:
@@ -28,4 +32,6 @@ public:
     ar & this->mBlockNr;
   }
 };
+
+BOOST_CLASS_EXPORT_KEY(Fnode);
 #endif

@@ -14,7 +14,6 @@
 #include "dnode.h"
 #include "fnode.h"
 
-BOOST_CLASS_EXPORT_IMPLEMENT(Fnode);
 
 class FileSystem {
 public:

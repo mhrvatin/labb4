@@ -5,7 +5,10 @@
 #include "bnode.h"
 #include "fnode.h"
 
-BOOST_CLASS_EXPORT_KEY(Fnode);
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 class Dnode: public Bnode {
 private:
@@ -32,4 +35,5 @@ public:
   }
 };
 
+BOOST_CLASS_EXPORT_KEY(Dnode);
 #endif

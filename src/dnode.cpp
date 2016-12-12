@@ -1,4 +1,5 @@
 #include "dnode.h"
+BOOST_CLASS_EXPORT_IMPLEMENT(Dnode);
 
 Dnode::Dnode() {
 	this->mFiles = std::vector<Bnode*>();

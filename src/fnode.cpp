@@ -1,4 +1,5 @@
 #include "fnode.h"
+BOOST_CLASS_EXPORT_IMPLEMENT(Fnode);
 
 Fnode::Fnode() {
 	this->mFdata = "";

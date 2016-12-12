@@ -2,6 +2,7 @@
 #define BNODE_H
 
 #include <string>
+#include <boost/serialization/vector.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -34,4 +35,6 @@ public:
     ar & this->mName;
   }
 };
+
+BOOST_CLASS_EXPORT_KEY(Bnode);
 #endif

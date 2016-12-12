@@ -1,5 +1,5 @@
 #include "bnode.h"
-
+BOOST_CLASS_EXPORT_IMPLEMENT(Bnode);
 Bnode::Bnode() {
 	this->mPath = "";
 	this->mName = "";
