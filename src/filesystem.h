@@ -76,11 +76,14 @@ public:
 
     int getFirstEmptyBlockNr();
 
+	int writeFileDataToBlock(Fnode* file, int blockNr);
     // Copy file
     int copyFile(std::string file, std::string newFilePath = "");
 
     // Helper function to split a path into path and directory
 	  std::vector<std::string> separateDir(const std::string & dir);
+
+	void restoreFileData(Bnode* atNode);
 };
 
 #endif // FILESYSTEM_H

@@ -39,8 +39,10 @@ std::string FileSystem::printContents(std::string fileName) {
       hit = true;
       Fnode* foundFile = dynamic_cast<Fnode*>(files.at(i));
 
+	 // std::cout << "Found file blocknr: " << foundFile->getBlockNr() << std::endl;
       Block block = this->mMemBlockDevice.readBlock(foundFile->getBlockNr());
       contents = block.toString();
+	  //contents = foundFile->getData();
 		}
 	}
 
@@ -114,19 +116,13 @@ int FileSystem::createFile(std::string fileName) {
     std::string tmp;
     int blockNr = this->getFirstEmptyBlockNr();
 
-    tmp = "tmp-value"; // TODO: user should be able to input text in file by themself 
-    //std::cin >> tmp;
+    std::cin >> tmp;
+	std::cin.ignore();
     tmp.resize(512);
 
     if (blockNr != -1) { // empty blocks are still available
       Fnode* file = new Fnode(tmp, destination->getPath(), destFile[1], blockNr);	
-      std::string tmp = file->getData();
-       
-      if (mMemBlockDevice.writeBlock(blockNr, file->getData()) != 1) {
-        ret = -1; // generic error
-      }
-
-     this->setBlockNrPos(blockNr);
+	  ret = this->writeFileDataToBlock(file, blockNr);
       dynamic_cast<Dnode*>(destination)->addNode(file);
     } else {
       ret = -2; // no empty blocks left
@@ -155,6 +151,7 @@ void FileSystem::restoreImage() {
   this->format();
   ia & this->mRoot;
   this->mWalker.setLookingAt(this->mRoot);
+  this->restoreFileData(mRoot);
 }
 
 int FileSystem::goToFolder(std::string dir) {
@@ -333,4 +330,45 @@ std::vector<std::string> FileSystem::separateDir(const std::string & dir) {
 	}
 
 	return returnVector;
+}
+
+int FileSystem::writeFileDataToBlock(Fnode* file, int blockNr)
+{
+	int ret = 1;
+      std::string tmp = file->getData();
+       
+      if (mMemBlockDevice.writeBlock(blockNr, file->getData()) != 1) {
+        ret = -1; // generic error
+      }
+
+	 file->setBlockNr(blockNr);
+     this->setBlockNrPos(blockNr);
+	return ret;
+}
+
+void FileSystem::restoreFileData(Bnode* atNode)
+{
+
+	std::vector<Bnode*> theVector = dynamic_cast<Dnode*>(atNode)->getFiles();
+	
+	for (unsigned int i = 0; i < theVector.size(); i++)
+	{
+	
+		if (dynamic_cast<Fnode*>(theVector.at(i)))
+		{
+			int blockNr = this->getFirstEmptyBlockNr();
+			//std::cout << "Restore data to " << theVector.at(i)->getName() << std::endl;
+			//std::cout << "Data to restore " << dynamic_cast<Fnode*>(theVector.at(i))->getData() << std::endl;
+			//std::cout << "Blocknr: " << blockNr << std::endl;
+			this->writeFileDataToBlock(dynamic_cast<Fnode*>(theVector.at(i)), blockNr);		
+	
+		}
+		else if (dynamic_cast<Dnode*>(theVector.at(i)))
+		{
+			//std::cout << "Hittar en mapp och kollar på den" << std::endl;
+			//std::cout << "Mappnamn: " << theVector.at(i)->getPath() << std::endl; 
+			this->restoreFileData(theVector.at(i));	
+		}	
+	}
+
 }
