@@ -24,8 +24,6 @@ void FileSystem::createFolder(std::string folderName) {
   }
 
 
-  // don't allocate vector dynamically:
-  // http://stackoverflow.com/questions/9437109/serialization-using-boost-serialization
   dynamic_cast<Dnode*>(destination)->addNode(new Dnode(destination->getPath() + 
 			destFile[1] + "/", destFile[1], destination));
 }
@@ -196,26 +194,21 @@ Dnode* FileSystem::findDir(std::string dir) {
 
 Dnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Dnode* theNode) {
 	Dnode* returnNode = theNode;
-	// std::cout << "Size of dir.size(): " << dir.size() << std::endl << "Size of size: " << size << std::endl;
 	
 	if(size == dir.size()) {
-		// std::cout << "REACHED BASE"; // DEBUGG ONLY
 		return returnNode;
 	} else {
 		if (dir[size] == "..") {
 			if (theNode->getDotDot() != nullptr) {	
-				//std::cout << "Going back one dir" + '\n'; FOR DEBUGGING ONLY	
 				returnNode = theNode->getDotDot();
 			}	
 		} else {
-			//std::cout << dir[size] << std::endl; # FOR DEBUGGING ONLY
 			std::vector<Bnode*> files = dynamic_cast<Dnode*>(returnNode)->getFiles();
 			returnNode = nullptr;
 
 			for(unsigned int i = 0; i < files.size(); i++) {	
 				if (dynamic_cast<Dnode*>(files.at(i))) {	
 					if(dir[size] == files.at(i)->getName()) {
-						//std::cout << " CHANGING DIRECTORY " + dir[size] + '\n'; //FOR DEBUGGING ONLY
 						returnNode = dynamic_cast<Dnode*>(files.at(i));
 						break;
 					} else if (i == files.size()-1) {	
@@ -226,8 +219,8 @@ Dnode* FileSystem::traverseTree(std::vector<std::string> dir, int size, Dnode* t
 			}
 			
 		}
-	//std::cout << "Returning: " << size+1 << std::endl << "dir.size():" << dir.size() << std::endl; // FOR DEBUGGING ONLY
-	return traverseTree(dir, size+1, returnNode);	
+
+	  return traverseTree(dir, size+1, returnNode);	
 	}
 }
 
