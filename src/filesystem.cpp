@@ -8,7 +8,6 @@ FileSystem::FileSystem() {
 FileSystem::~FileSystem() {
   delete this->mRoot;
 }
-
 void FileSystem::createFolder(std::string folderName) {
   std::vector<std::string> destFile = separateDir(folderName); 
   Dnode* destination;
@@ -29,13 +28,31 @@ void FileSystem::createFolder(std::string folderName) {
 }
 
 std::string FileSystem::printContents(std::string fileName) {
+  
+  std::vector<std::string> destFile = separateDir(fileName);
+  Bnode* destination;
   std::string contents = "No such file or directory";
+  
+  if (destFile[0] != "")
+  {
+	destination = findDir(destFile[0]);
+
+	if (destination == nullptr)
+	{
+		return contents;
+	}	
+  }
+  else
+  {
+	destination = mWalker.getLookingAt();
+  }
+
 
   bool hit = false;
-  std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
+  std::vector<Bnode*> files = dynamic_cast<Dnode*>(destination)->getFiles(); 
   
   for (unsigned int i = 0; i < files.size() && !hit; i++) {
-    if (dynamic_cast<Fnode*>(files.at(i)) && files.at(i)->getName() == fileName) {
+    if (dynamic_cast<Fnode*>(files.at(i)) && files.at(i)->getName() == destFile[1]) {
       hit = true;
       Fnode* foundFile = dynamic_cast<Fnode*>(files.at(i));
 
@@ -228,8 +245,9 @@ void FileSystem::format() {
 }
 
 void FileSystem::initFileSystem() {
-    this->mRoot = new Dnode();
-    this->mWalker = Walker(this->mRoot, nullptr);
+	
+	this->mRoot = new Dnode();
+    this->mWalker.setLookingAt(this->mRoot); 
 
     for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
       this->mBlockNrs[i] = false;
@@ -268,9 +286,25 @@ int FileSystem::copyFile(std::string file, std::string newFilePath) {
 		return exitStatus;	
 	}
 	
+	std::vector<std::string> sourceFile = separateDir(file);
 	std::vector<std::string> destFile = separateDir(newFilePath);
 	Bnode* destination;
+	Bnode* source;	
+	
   
+	if (sourceFile[0] != "")
+	{
+		source = findDir(sourceFile[0]);
+
+		if (source == nullptr)
+		{
+			exitStatus = -4;
+			return exitStatus;
+		}
+	} else {
+		source = mWalker.getLookingAt();
+	}
+
 	if (destFile[0] != "") {
 		destination = findDir(destFile[0]);
 	
@@ -282,10 +316,10 @@ int FileSystem::copyFile(std::string file, std::string newFilePath) {
 		destination = mWalker.getLookingAt();
 	}
 
-	std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
+	std::vector<Bnode*> files = dynamic_cast<Dnode*>(source)->getFiles(); 
 
 	for(unsigned int i = 0; i < files.size(); i++) {
-		if(dynamic_cast<Fnode*>(files[i]) && file == files[i]->getName()) {
+		if(dynamic_cast<Fnode*>(files[i]) && sourceFile[1] == files[i]->getName()) {
 				
 			std::string tmp;
 			tmp.reserve(512);
