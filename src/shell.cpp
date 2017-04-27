@@ -24,19 +24,18 @@ int main(void) {
     bool bRun = true;
 
     do {
-		std::string currentDir = fs.printCurrentWorkingDirectory();    // current directory, used for output
-        std::cout << user << ":" << currentDir << "$ ";
-        getline(std::cin, userCommand);
-		std::string commandArr[MAXCOMMANDS];
+		  std::string currentDir = fs.printCurrentWorkingDirectory();    // current directory, used for output
+      std::cout << user << ":" << currentDir << "$ ";
+      getline(std::cin, userCommand);
+		  std::string commandArr[MAXCOMMANDS];
         
-		int nrOfCommands = parseCommandString(userCommand, commandArr);
-        if (nrOfCommands > 0) {
+		  int nrOfCommands = parseCommandString(userCommand, commandArr);
+      if (nrOfCommands > 0) {
 			
 			//std::cout << commandArr[1] << std::endl; //for debugging only!
             
 			int cIndex = findCommand(commandArr[0]);
-            switch(cIndex) {
-
+        switch(cIndex) {
             case 0: // quit
                 bRun = false;
                 std::cout << "Exiting\n";

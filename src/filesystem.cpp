@@ -28,23 +28,18 @@ void FileSystem::createFolder(std::string folderName) {
 }
 
 std::string FileSystem::printContents(std::string fileName) {
-  
   std::vector<std::string> destFile = separateDir(fileName);
   Bnode* destination;
   std::string contents = "No such file or directory";
   
-  if (destFile[0] != "")
-  {
-	destination = findDir(destFile[0]);
+  if (destFile[0] != "") {
+	  destination = findDir(destFile[0]);
 
-	if (destination == nullptr)
-	{
-		return contents;
-	}	
-  }
-  else
-  {
-	destination = mWalker.getLookingAt();
+    if (destination == nullptr) {
+      return contents;
+    }	
+  } else {
+	  destination = mWalker.getLookingAt();
   }
 
 
@@ -76,8 +71,7 @@ int FileSystem::removeFile(std::string fileName) {
   
   for (unsigned int i = 0; i < files.size() && ret == -1; i++) {
     if (files.at(i)->getName() == fileName) {
-			if(dynamic_cast<Fnode*>(files.at(i)))
-			{			
+			if(dynamic_cast<Fnode*>(files.at(i))) {			
         ret = 1;
         Fnode* fileToDelete = dynamic_cast<Fnode*>(files.at(i));
 
@@ -134,7 +128,7 @@ int FileSystem::createFile(std::string fileName) {
     int blockNr = this->getFirstEmptyBlockNr();
 
     std::cin >> tmp;
-	std::cin.ignore();
+	  std::cin.ignore();
     tmp.resize(512);
 
     if (blockNr != -1) { // empty blocks are still available
@@ -245,13 +239,12 @@ void FileSystem::format() {
 }
 
 void FileSystem::initFileSystem() {
-	
 	this->mRoot = new Dnode();
-    this->mWalker.setLookingAt(this->mRoot); 
+  this->mWalker.setLookingAt(this->mRoot); 
 
-    for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
-      this->mBlockNrs[i] = false;
-    }
+  for (int i = 0; i < this->BLOCK_ARRAY_SIZE; i++) {
+    this->mBlockNrs[i] = false;
+  }
 }
 
 void FileSystem::setBlockNrPos(int idx) {
