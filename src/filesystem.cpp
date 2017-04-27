@@ -71,8 +71,24 @@ std::string FileSystem::printCurrentWorkingDirectory() {
 }
 
 int FileSystem::removeFile(std::string fileName) {
+  
   int ret = -1;
-  std::vector<Bnode*> files = dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->getFiles(); 
+  Dnode* destination;
+  std::vector<std::string> destFile = separateDir(fileName);
+  
+  if (destFile[0] != "") {
+    destination = findDir(destFile[0]);
+    fileName = destFile[1];
+   
+    if(destination == nullptr) {
+      return ret;
+    }
+  } else {
+	  destination = mWalker.getLookingAt();
+  }
+
+
+  std::vector<Bnode*> files = dynamic_cast<Dnode*>(destination)->getFiles(); 
   
   for (unsigned int i = 0; i < files.size() && ret == -1; i++) {
     if (files.at(i)->getName() == fileName) {
@@ -81,7 +97,7 @@ int FileSystem::removeFile(std::string fileName) {
         ret = 1;
         Fnode* fileToDelete = dynamic_cast<Fnode*>(files.at(i));
 
-				dynamic_cast<Dnode*>(this->mWalker.getLookingAt())->removeNode(i);
+				dynamic_cast<Dnode*>(destination)->removeNode(i);
         this->deleteBlockNrPos(fileToDelete->getBlockNr()); // set file's block position as empty
 			}
 		}
